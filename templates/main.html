@@ -5,15 +5,62 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/all.min.css">
   </head>
   <body>
-    <form id="upload-form" method="post" enctype="multipart/form-data">
-      <input type="file" id="img" name="img" accept="image/*" />
-    </form>
+    <div class="bigger-container">
+      <div class="container">
+        <div class="upload-file">
+        </div>
+        <div class="original-canvas">
+          <div class="canv-cont">
+            <canvas id="first-img-canvas" class="canvas"></canvas>
+            <form id="upload-form" method="post" enctype="multipart/form-data">
+              <input type="file" id="img1" class="first-canv" name="img" accept="image/*"  multiple = "false"/>
+            </form>
+            <div class="upload-img first-canv">
+              <div class="frame">
+                <div class="upload-icon">
+                  <i class="fa-solid fa-upload"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="canv-cont">
+            <canvas id="first-img-ft-canvas" class="canvas"></canvas>
+          </div>
+          <div class="canv-cont">
+            <canvas id="second-img-canvas" class="canvas second-canv"></canvas>
+            <form id="upload-form" method="post" enctype="multipart/form-data">
+              <input type="file" id="img2" class="second-canv" name="img" accept="image/*"  multiple = "false"/>
+            </form>
+            <div class="upload-img second-canv">
+              <div class="frame">
+                <div class="upload-icon">
+                  <i class="fa-solid fa-upload"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="canv-cont">
+            <canvas id="second-img-ft-canvas" class="canvas"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="output-container">
+        <div class="output">
+          <canvas id="output" class="canvas"></canvas>
+        </div>
+        <div class="btns">
+          <div class="download-btn">Download</div>
+          <div class="show-result-btn">Show Result</div>
+        </div>
+      </div>
+    </div>
   </body>
   <script src="/static/js/main.js"></script>
-  <script
-    type="text/javascript"
-    src="https://code.jquery.com/jquery.min.js"
-  ></script>
+  <script src="/static/js/all.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+  <script src= "https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
 </html>
