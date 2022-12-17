@@ -94,11 +94,12 @@ let startX, startY;
 
 // Drawing Functions
 const drawRect = (shape) => {
+  context.fillStyle = "skyblue";
   context.fillRect(shape.x, shape.y, shape.width, shape.height);
 };
 
 const drawEllipse = (shape) => {
-  context.fillStyle = "black";
+  context.fillStyle = "skyblue";
   context.beginPath();
   context.ellipse(
     shape.x,
@@ -109,7 +110,6 @@ const drawEllipse = (shape) => {
     0,
     2 * Math.PI
   );
-  context.stroke();
   context.fill();
 };
 
@@ -143,20 +143,18 @@ const draw_shapes = () => {
   if (mode == 2) {
     context.globalCompositeOperation = "xor";
     context.fillStyle = "black";
-  } else if (mode == 1) {
-    context.fillRect(0, 0, canvas.width, canvas.height);
   } else if (mode == 0) {
     context.globalCompositeOperation = "source-over";
     context.fillStyle = "black";
   }
   for (let shape of shapes) {
-    if (mode == 1) {
-      context.globalCompositeOperation = "xor";
-    }
     if (shape.type == "rect") {
       drawRect(shape);
     } else {
       drawEllipse(shape);
+    }
+    if (mode == 1) {
+      context.globalCompositeOperation = "multiply";
     }
   }
 };

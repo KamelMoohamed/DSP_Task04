@@ -1,9 +1,9 @@
 let uploadImage = document.getElementsByClassName("upload-img");
 let firstImg = document.getElementById("img1");
 firstImg.addEventListener("change", (e) => {
-  firstDisableBtn.classList.add("show-disable-btn")
+  firstDisableBtn.classList.add("show-disable-btn");
   firstCanvas.classList.remove("disabled");
-  firstDisableBtn.classList.remove("active")
+  firstDisableBtn.classList.remove("active");
   sendImage(0);
   uploadFile("img1");
   setTimeout(makeGray.bind(null, "first-img-canvas"), 90);
@@ -15,9 +15,9 @@ firstImg.addEventListener("change", (e) => {
 });
 let secondImg = document.getElementById("img2");
 secondImg.addEventListener("change", (e) => {
-  secondDisableBtn.classList.add("show-disable-btn")
+  secondDisableBtn.classList.add("show-disable-btn");
   secondCanvas.classList.remove("disabled");
-  secondDisableBtn.classList.remove("active")
+  secondDisableBtn.classList.remove("active");
 
   sendImage(1);
   uploadFile("img2");
@@ -58,13 +58,12 @@ firstImg.addEventListener("mouseover", () => {
 });
 firstImg.addEventListener("mouseout", () => {
   firstCanvas.classList.remove("reduce-opacity");
-
 });
 
 firstDisableBtn.addEventListener("click", () => {
   firstCanvas.classList.toggle("disabled");
-  firstDisableBtn.classList.toggle("active")
-})
+  firstDisableBtn.classList.toggle("active");
+});
 
 let secondCanvas = document.getElementById("second-img-canvas");
 let secondDisableBtn = document.getElementById("second-disable");
@@ -77,11 +76,11 @@ secondImg.addEventListener("mouseout", () => {
 
 secondDisableBtn.addEventListener("click", () => {
   secondCanvas.classList.toggle("disabled");
-  secondDisableBtn.classList.toggle("active")
-})
+  secondDisableBtn.classList.toggle("active");
+});
 
 DisableBtn.classList.toggle("show-disable-btn");
-});
+
 function sendImage(pathParams) {
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
 
