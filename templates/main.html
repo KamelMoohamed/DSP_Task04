@@ -30,15 +30,19 @@
       <div class="select-options">
         <div class="option all tooltip selected-option">
           <span class="tooltiptext">All</span>
-          <img src="../static/imgs/icon1.png" class="img selected-option" alt="" />
+          <img
+            src="../static/imgs/icon1.png"
+            class="img selected-option"
+            alt=""
+          />
         </div>
         <div class="option intersect tooltip">
           <span class="tooltiptext">intersect</span>
-          <img src="../static/imgs/icon3.png" class="img " alt="" />
+          <img src="../static/imgs/icon3.png" class="img" alt="" />
         </div>
         <div class="option difference tooltip">
           <span class="tooltiptext">Difference</span>
-          <img src="../static/imgs/icon2.png" class="img " alt="" />
+          <img src="../static/imgs/icon2.png" class="img" alt="" />
         </div>
       </div>
       <div class="vr-line"></div>
@@ -46,21 +50,28 @@
         <div class="select mag">
           <h5>Image 1</h5>
           <div class="select">
-            <div class="1 first-img img-selection selected-img">Magnitude </div>
-            <div class="2 second-img img-selection">Phase</div>
+            <div class="1 first-img img-selection selected-img" id="img1-mag">
+              Magnitude
+            </div>
+            <div class="2 second-img img-selection" id="img1-phase">Phase</div>
           </div>
         </div>
         <div class="select phase">
           <h5>Image 2</h5>
           <div class="select">
-            <div class="2 first-img img-selection">Magnitude </div>
-            <div class="1 second-img img-selection selected-img">Phase</div>
+            <div class="2 first-img img-selection" id="img2-mag">Magnitude</div>
+            <div
+              class="1 second-img img-selection selected-img"
+              id="img2-phase"
+            >
+              Phase
+            </div>
           </div>
         </div>
       </div>
       <div class="vr-line">
         <div class="delete-btn tooltip">
-          <span class="tooltiptext">Delete</span>
+          <span class="tooltiptext">Delete (D)</span>
           <i class="fa-solid fa-trash"></i>
         </div>
       </div>
@@ -74,7 +85,7 @@
               <i class="fa-solid fa-ban"></i>
             </div>
             <canvas id="first-img-canvas" class="canvas"></canvas>
-            <form id="upload-form" method="post" enctype="multipart/form-data">
+            <form id="upload-form0" method="post" enctype="multipart/form-data">
               <input
                 type="file"
                 id="img1"
@@ -92,15 +103,15 @@
               </div>
             </div>
           </div>
-          <div class="canv-cont">
-            <canvas id="first-img-ft-canvas" class="canvas"></canvas>
+          <div class="canv-cont prevent-click fourier1">
+            <canvas id="first-img-ft-canvas" class="drawing"></canvas>
           </div>
           <div class="canv-cont">
             <div class="disable disable2" id="second-disable">
               <i class="fa-solid fa-ban"></i>
             </div>
             <canvas id="second-img-canvas" class="canvas second-canv"></canvas>
-            <form id="upload-form" method="post" enctype="multipart/form-data">
+            <form id="upload-form1" method="post" enctype="multipart/form-data">
               <input
                 type="file"
                 id="img2"
@@ -118,23 +129,25 @@
               </div>
             </div>
           </div>
-          <div class="canv-cont">
-            <canvas id="second-img-ft-canvas" class="canvas"></canvas>
+          <div class="canv-cont prevent-click fourier2">
+            <canvas id="second-img-ft-canvas" class="drawing"></canvas>
           </div>
         </div>
       </div>
       <div class="output-container">
-        <div class="output">
+        <div class="output output-canvas">
           <canvas id="output" class="canvas"></canvas>
         </div>
         <div class="btns">
           <div class="download-btn">Download</div>
-          <div class="show-result-btn">Show Result</div>
+          <div class="show-result-btn" id="show-result-btn">Show Result</div>
         </div>
       </div>
     </div>
   </body>
   <script src="/static/js/main.js"></script>
+  <script src="/static/js/drawing.js"></script>
+  <script src="/static/js/mix.js"></script>
   <script src="/static/js/all.min.js"></script>
   <script
     type="text/javascript"

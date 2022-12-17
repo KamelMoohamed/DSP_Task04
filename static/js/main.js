@@ -4,7 +4,7 @@ firstImg.addEventListener("change", (e) => {
   firstDisableBtn.classList.add("show-disable-btn")
   firstCanvas.classList.remove("disabled");
   firstDisableBtn.classList.remove("active")
-  sendImage();
+  sendImage(0);
   uploadFile("img1");
   setTimeout(makeGray.bind(null, "first-img-canvas"), 90);
   for (i = 0; i < uploadImage.length; i++) {
@@ -18,7 +18,8 @@ secondImg.addEventListener("change", (e) => {
   secondDisableBtn.classList.add("show-disable-btn")
   secondCanvas.classList.remove("disabled");
   secondDisableBtn.classList.remove("active")
-  sendImage();
+
+  sendImage(1);
   uploadFile("img2");
   setTimeout(makeGray.bind(null, "second-img-canvas"), 90);
   for (i = 0; i < uploadImage.length; i++) {
@@ -57,6 +58,7 @@ firstImg.addEventListener("mouseover", () => {
 });
 firstImg.addEventListener("mouseout", () => {
   firstCanvas.classList.remove("reduce-opacity");
+
 });
 
 firstDisableBtn.addEventListener("click", () => {
@@ -78,19 +80,33 @@ secondDisableBtn.addEventListener("click", () => {
   secondDisableBtn.classList.toggle("active")
 })
 
-function sendImage() {
-  var formData = new FormData($("#upload-form")[0]);
+DisableBtn.classList.toggle("show-disable-btn");
+});
+function sendImage(pathParams) {
+  var formData = new FormData($(`#upload-form${pathParams}`)[0]);
 
   $.ajax({
     type: "POST",
-    url: "/upload-image",
+    url: `/upload-image/${pathParams}`,
     data: formData,
     contentType: false,
     cache: false,
     processData: false,
     async: true,
     success: function (data) {
-      console.log(data);
+      if (pathParams == 0) {
+        firstImageContent = {
+          mag: data.path[1],
+          phase: data.path[2],
+        };
+      } else {
+        secondImageContent = {
+          mag: data.path[1],
+          phase: data.path[2],
+        };
+      }
+
+      console.log(firstImageContent);
     },
   });
 }
@@ -112,13 +128,16 @@ document.addEventListener("click", (e) => {
       optionIcons[i].classList.remove("selected-option");
     }
     e.target.children[1].classList.add("selected-option");
-    
   }
   if (e.target.classList.contains("img-selection")) {
     for (i = 0; i < imgIcons.length; i++) {
       imgIcons[i].classList.remove("selected-img");
     }
-    for (i = 0; i < document.getElementsByClassName(`${e.target.classList[0]}`).length; i++) {
+    for (
+      i = 0;
+      i < document.getElementsByClassName(`${e.target.classList[0]}`).length;
+      i++
+    ) {
       document
         .getElementsByClassName(`${e.target.classList[0]}`)
         [i].classList.add("selected-img");
