@@ -71,7 +71,7 @@
       </div>
       <div class="vr-line">
         <div class="delete-btn tooltip">
-          <span class="tooltiptext">Delete</span>
+          <span class="tooltiptext">Delete (D)</span>
           <i class="fa-solid fa-trash"></i>
         </div>
       </div>
@@ -103,7 +103,7 @@
               </div>
             </div>
           </div>
-          <div class="canv-cont prevent-click">
+          <div class="canv-cont prevent-click fourier1">
             <canvas id="first-img-ft-canvas" class="drawing"></canvas>
           </div>
           <div class="canv-cont">
@@ -129,24 +129,25 @@
               </div>
             </div>
           </div>
-          <div class="canv-cont prevent-click">
+          <div class="canv-cont prevent-click fourier2">
             <canvas id="second-img-ft-canvas" class="drawing"></canvas>
           </div>
         </div>
       </div>
       <div class="output-container">
-        <div class="output">
+        <div class="output output-canvas">
           <canvas id="output" class="canvas"></canvas>
         </div>
         <div class="btns">
           <div class="download-btn">Download</div>
-          <div class="show-result-btn">Show Result</div>
+          <div class="show-result-btn" id="show-result-btn">Show Result</div>
         </div>
       </div>
     </div>
   </body>
   <script src="/static/js/main.js"></script>
   <script src="/static/js/drawing.js"></script>
+  <script src="/static/js/mix.js"></script>
   <script src="/static/js/all.min.js"></script>
   <script
     type="text/javascript"
