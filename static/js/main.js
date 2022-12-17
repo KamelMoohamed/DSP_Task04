@@ -63,7 +63,7 @@ function sendImage() {
 
   $.ajax({
     type: "POST",
-    url: "/upload-image",
+    url: "/upload-image/0",
     data: formData,
     contentType: false,
     cache: false,
