@@ -8,7 +8,7 @@ class ImageEditor:
         self.img=[Image(),Image()]
     
     def upload_img(self:object,path:str,image_id:int):
-        dir_path=os.path.dirname(path)
+        dir_path = os.path.dirname(path)
         
         self.img[image_id].path=path
         self.img[image_id].img_data = cv.imread(path,cv.IMREAD_GRAYSCALE)
@@ -17,12 +17,13 @@ class ImageEditor:
         self.img[image_id].magnitude_spectrum = np.abs(self.img[image_id].fshift)
         self.img[image_id].phase_spectrum= np.angle(self.img[image_id].fshift)
 
-        mag_path= os.path.join(dir_path,f"mag{image_id}.jpg")
-        phase_path=os.path.join(dir_path,f"phase{image_id}.jpg")
+        mag_path= f"mag{image_id}.jpg"
+        phase_path=f"phase{image_id}.jpg"
 
-        cv.imwrite(mag_path,self.scale(20*np.log(self.img[image_id].magnitude_spectrum)))
-        cv.imwrite(phase_path,self.scale(self.img[image_id].phase_spectrum))
-        return [mag_path,phase_path]
+        cv.imwrite(os.path.join(dir_path, mag_path), self.scale(20*np.log(self.img[image_id].magnitude_spectrum)))
+        cv.imwrite(os.path.join(dir_path, phase_path), self.scale(self.img[image_id].phase_spectrum))
+
+        return [mag_path, phase_path]
     
 
     def scale(self,image_array):
@@ -41,9 +42,11 @@ class ImageEditor:
             shifted_fft=mag_mask*self.img[commands["magnitude"]].magnitude_spectrum* np.exp(1j*phase_mask*self.img[commands["phase"]].phase_spectrum)
         
         fft = np.fft.ifftshift(shifted_fft)
+        print(fft.shape)
+
         img = np.fft.ifft2(fft)
 
-        if commands["magnitude"]=="empty":
+        if commands["magnitude"] == "empty":
             cv.imwrite(os.path.join(os.path.dirname(self.img[0].path),"output.jpg"),self.scale(np.abs(img)))
         else:
             cv.imwrite(os.path.join(os.path.dirname(self.img[0].path),"output.jpg"),self.scale(cv.equalizeHist(np.abs(img).astype(np.uint8))))

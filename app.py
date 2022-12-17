@@ -27,12 +27,12 @@ def upload(image_id):
         file_ext= file.filename.split(".")[-1]
         abspath = os.path.dirname(__file__)
         file_path = os.path.join(
-            abspath, 'uploads', f"image{image_id}.{file_ext}")
+            abspath, 'static', 'uploads', f"image{image_id}.{file_ext}")
         file.save(file_path)
         paths=editor.upload_img(path=file_path,image_id=image_id)
 
         
-        return jsonify({"path":[file_path,*paths]}),200
+        return jsonify({"path":[f"../static/uploads/image{image_id}.{file_ext}",*paths]}),200
 
     return "",400
 
@@ -40,6 +40,7 @@ def upload(image_id):
 def mix_image():
     global editor
     commands= request.json
+    print(commands)
     editor.mix(commands=commands)
     return "",200
 
