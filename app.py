@@ -31,10 +31,17 @@ def upload(image_id):
         file.save(file_path)
         paths=editor.upload_img(path=file_path,image_id=image_id)
 
-
+        
         return jsonify({"path":[file_path,*paths]}),200
 
     return "",400
+
+@app.route("/mix-image",methods=["POST"])
+def mix_image():
+    global editor
+    commands= request.json
+    editor.mix(commands=commands)
+    return "",200
 
 if __name__ == '__main__':
     app.run(debug=True) 

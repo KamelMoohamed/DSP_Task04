@@ -1,7 +1,7 @@
 let uploadImage = document.getElementsByClassName("upload-img");
 let firstImg = document.getElementById("img1");
 firstImg.addEventListener("change", (e) => {
-  sendImage();
+  sendImage("0");
   uploadFile("img1");
   setTimeout(makeGray.bind(null, "first-img-canvas"), 90);
   for (i = 0; i < uploadImage.length; i++) {
@@ -12,7 +12,7 @@ firstImg.addEventListener("change", (e) => {
 });
 let secondImg = document.getElementById("img2");
 secondImg.addEventListener("change", (e) => {
-  sendImage();
+  sendImage("1");
   uploadFile("img2");
   setTimeout(makeGray.bind(null, "second-img-canvas"), 90);
   for (i = 0; i < uploadImage.length; i++) {
@@ -58,12 +58,12 @@ secondImg.addEventListener("mouseover", () => {
 secondImg.addEventListener("mouseout", () => {
   secondCanvas.classList.toggle("reduce-opacity");
 });
-function sendImage() {
+function sendImage(image_id) {
   var formData = new FormData($("#upload-form")[0]);
 
   $.ajax({
     type: "POST",
-    url: "/upload-image/0",
+    url: `/upload-image/${image_id}`,
     data: formData,
     contentType: false,
     cache: false,
