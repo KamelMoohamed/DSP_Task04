@@ -1,7 +1,7 @@
 let uploadImage = document.getElementsByClassName("upload-img");
 let firstImg = document.getElementById("img1");
 firstImg.addEventListener("change", (e) => {
-  sendImage("0");
+  sendImage(0);
   uploadFile("img1");
   setTimeout(makeGray.bind(null, "first-img-canvas"), 90);
   for (i = 0; i < uploadImage.length; i++) {
@@ -12,7 +12,7 @@ firstImg.addEventListener("change", (e) => {
 });
 let secondImg = document.getElementById("img2");
 secondImg.addEventListener("change", (e) => {
-  sendImage("1");
+  sendImage(1);
   uploadFile("img2");
   setTimeout(makeGray.bind(null, "second-img-canvas"), 90);
   for (i = 0; i < uploadImage.length; i++) {
@@ -70,18 +70,12 @@ secondImg.addEventListener("mouseout", () => {
   secondCanvas.classList.toggle("reduce-opacity");
   secondDisableBtn.classList.toggle("show-disable-btn")
 });
-secondDisableBtn.addEventListener("mouseover", () => {
-  secondDisableBtn.classList.toggle("show-disable-btn")
-});
-secondDisableBtn.addEventListener("mouseout", () => {
-  secondDisableBtn.classList.toggle("show-disable-btn")
-});
-function sendImage(image_id) {
-  var formData = new FormData($("#upload-form")[0]);
+function sendImage(pathParams) {
+  var formData = new FormData($(`#upload-form${pathParams}`)[0]);
 
   $.ajax({
     type: "POST",
-    url: `/upload-image/${image_id}`,
+    url: `/upload-image/${pathParams}`,
     data: formData,
     contentType: false,
     cache: false,
@@ -110,13 +104,16 @@ document.addEventListener("click", (e) => {
       optionIcons[i].classList.remove("selected-option");
     }
     e.target.children[1].classList.add("selected-option");
-    
   }
   if (e.target.classList.contains("img-selection")) {
     for (i = 0; i < imgIcons.length; i++) {
       imgIcons[i].classList.remove("selected-img");
     }
-    for (i = 0; i < document.getElementsByClassName(`${e.target.classList[0]}`).length; i++) {
+    for (
+      i = 0;
+      i < document.getElementsByClassName(`${e.target.classList[0]}`).length;
+      i++
+    ) {
       document
         .getElementsByClassName(`${e.target.classList[0]}`)
         [i].classList.add("selected-img");
