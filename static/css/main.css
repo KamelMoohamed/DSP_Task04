@@ -260,6 +260,11 @@ body {
   opacity: 0;
 }
 
+.active{
+  color: var(--hover-color) !important;
+}
+
+
 .disable2 {
   top: 53% !important;
 }
@@ -267,6 +272,12 @@ body {
 .show-disable-btn {
   opacity: 1;
 }
+
+.disabled{
+  opacity: 0.1 !important;
+  transition: 0.5;
+}
+
 
 .disable:hover {
   color: var(--hover-color);

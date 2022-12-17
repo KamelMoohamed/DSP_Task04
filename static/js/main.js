@@ -1,6 +1,9 @@
 let uploadImage = document.getElementsByClassName("upload-img");
 let firstImg = document.getElementById("img1");
 firstImg.addEventListener("change", (e) => {
+  firstDisableBtn.classList.add("show-disable-btn")
+  firstCanvas.classList.remove("disabled");
+  firstDisableBtn.classList.remove("active")
   sendImage(0);
   uploadFile("img1");
   setTimeout(makeGray.bind(null, "first-img-canvas"), 90);
@@ -12,6 +15,10 @@ firstImg.addEventListener("change", (e) => {
 });
 let secondImg = document.getElementById("img2");
 secondImg.addEventListener("change", (e) => {
+  secondDisableBtn.classList.add("show-disable-btn")
+  secondCanvas.classList.remove("disabled");
+  secondDisableBtn.classList.remove("active")
+
   sendImage(1);
   uploadFile("img2");
   setTimeout(makeGray.bind(null, "second-img-canvas"), 90);
@@ -47,28 +54,33 @@ function makeGray(e) {
 let firstCanvas = document.getElementById("first-img-canvas");
 let firstDisableBtn = document.getElementById("first-disable");
 firstImg.addEventListener("mouseover", () => {
-  firstCanvas.classList.toggle("reduce-opacity");
-  firstDisableBtn.classList.toggle("show-disable-btn");
+  firstCanvas.classList.add("reduce-opacity");
 });
 firstImg.addEventListener("mouseout", () => {
-  firstCanvas.classList.toggle("reduce-opacity");
-  firstDisableBtn.classList.toggle("show-disable-btn");
+  firstCanvas.classList.remove("reduce-opacity");
+
 });
-firstDisableBtn.addEventListener("mouseover", () => {
-  firstDisableBtn.classList.toggle("show-disable-btn");
-});
-firstDisableBtn.addEventListener("mouseout", () => {
-  firstDisableBtn.classList.toggle("show-disable-btn");
-});
+
+firstDisableBtn.addEventListener("click", () => {
+  firstCanvas.classList.toggle("disabled");
+  firstDisableBtn.classList.toggle("active")
+})
+
 let secondCanvas = document.getElementById("second-img-canvas");
 let secondDisableBtn = document.getElementById("second-disable");
 secondImg.addEventListener("mouseover", () => {
-  secondCanvas.classList.toggle("reduce-opacity");
-  secondDisableBtn.classList.toggle("show-disable-btn");
+  secondCanvas.classList.add("reduce-opacity");
 });
 secondImg.addEventListener("mouseout", () => {
-  secondCanvas.classList.toggle("reduce-opacity");
-  secondDisableBtn.classList.toggle("show-disable-btn");
+  secondCanvas.classList.remove("reduce-opacity");
+});
+
+secondDisableBtn.addEventListener("click", () => {
+  secondCanvas.classList.toggle("disabled");
+  secondDisableBtn.classList.toggle("active")
+})
+
+DisableBtn.classList.toggle("show-disable-btn");
 });
 function sendImage(pathParams) {
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
