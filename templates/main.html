@@ -5,19 +5,70 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/main.css" />
+    <link rel="stylesheet" href="../static/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <div class="toolbar">
+      <div class="select-type">
+        <div class="type cir">
+          <div class="icon selected-type"></div>
+        </div>
+        <div class="type rec">
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="vr-line"></div>
+      <div class="select-options">
+        <div class="option all selected-option">
+          <img src="../static/imgs/icon1.png" alt="" />
+        </div>
+        <div class="option intersect">
+          <img src="../static/imgs/icon3.png" alt="" />
+        </div>
+        <div class="option difference">
+          <img src="../static/imgs/icon2.png" alt="" />
+        </div>
+      </div>
+      <div class="vr-line"></div>
+      <div class="select-img">
+        <div class="select mag">
+          <h5>Image 1</h5>
+          <div class="select">
+            <div class="1 first-img img-selection selected-img">Mag</div>
+            <div class="2 second-img img-selection">Phase</div>
+          </div>
+        </div>
+        <div class="select phase">
+          <h5>Image 2</h5>
+          <div class="select">
+            <div class="2 first-img img-selection">Mag</div>
+            <div class="1 second-img img-selection selected-img">Phase</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="bigger-container">
       <div class="container">
-        <div class="upload-file">
-        </div>
+        <div class="upload-file"></div>
         <div class="original-canvas">
           <div class="canv-cont">
             <canvas id="first-img-canvas" class="canvas"></canvas>
             <form id="upload-form" method="post" enctype="multipart/form-data">
-              <input type="file" id="img1" class="first-canv" name="img" accept="image/*"  multiple = "false"/>
+              <input
+                type="file"
+                id="img1"
+                class="first-canv"
+                name="img"
+                accept="image/*"
+                multiple="false"
+              />
             </form>
             <div class="upload-img first-canv">
               <div class="frame">
@@ -33,7 +84,14 @@
           <div class="canv-cont">
             <canvas id="second-img-canvas" class="canvas second-canv"></canvas>
             <form id="upload-form" method="post" enctype="multipart/form-data">
-              <input type="file" id="img2" class="second-canv" name="img" accept="image/*"  multiple = "false"/>
+              <input
+                type="file"
+                id="img2"
+                class="second-canv"
+                name="img"
+                accept="image/*"
+                multiple="false"
+              />
             </form>
             <div class="upload-img second-canv">
               <div class="frame">
@@ -61,6 +119,9 @@
   </body>
   <script src="/static/js/main.js"></script>
   <script src="/static/js/all.min.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
-  <script src= "https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery.min.js"
+  ></script>
+  <script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
 </html>

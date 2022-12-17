@@ -74,3 +74,33 @@ function sendImage() {
     },
   });
 }
+let typeIcons = document.getElementsByClassName("icon");
+let optionIcons = document.getElementsByClassName("option");
+let imgIcons = document.getElementsByClassName("img-selection");
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("type")) {
+    for (i = 0; i < typeIcons.length; i++) {
+      typeIcons[i].classList.remove("selected-type");
+    }
+    let selectedType = document.querySelector(
+      `.${e.target.classList[1]} .icon`
+    );
+    selectedType.classList.add("selected-type");
+  }
+  if (e.target.classList.contains("option")) {
+    for (i = 0; i < optionIcons.length; i++) {
+      optionIcons[i].classList.remove("selected-option");
+    }
+    e.target.classList.add("selected-option");
+  }
+  if (e.target.classList.contains("img-selection")) {
+    for (i = 0; i < imgIcons.length; i++) {
+      imgIcons[i].classList.remove("selected-img");
+    }
+    for (i = 0; i < document.getElementsByClassName(`${e.target.classList[0]}`).length; i++) {
+      document
+        .getElementsByClassName(`${e.target.classList[0]}`)
+        [i].classList.add("selected-img");
+    }
+  }
+});
