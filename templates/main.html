@@ -58,12 +58,21 @@
           </div>
         </div>
       </div>
+      <div class="vr-line">
+        <div class="delete-btn tooltip">
+          <span class="tooltiptext">Delete</span>
+          <i class="fa-solid fa-trash"></i>
+        </div>
+      </div>
     </div>
     <div class="bigger-container">
       <div class="container">
         <div class="upload-file"></div>
         <div class="original-canvas">
           <div class="canv-cont">
+            <div class="disable" id="first-disable">
+              <i class="fa-solid fa-ban"></i>
+            </div>
             <canvas id="first-img-canvas" class="canvas"></canvas>
             <form id="upload-form" method="post" enctype="multipart/form-data">
               <input
@@ -87,6 +96,9 @@
             <canvas id="first-img-ft-canvas" class="canvas"></canvas>
           </div>
           <div class="canv-cont">
+            <div class="disable disable2" id="second-disable">
+              <i class="fa-solid fa-ban"></i>
+            </div>
             <canvas id="second-img-canvas" class="canvas second-canv"></canvas>
             <form id="upload-form" method="post" enctype="multipart/form-data">
               <input

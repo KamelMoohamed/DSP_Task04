@@ -45,18 +45,36 @@ function makeGray(e) {
 }
 
 let firstCanvas = document.getElementById("first-img-canvas");
+let firstDisableBtn = document.getElementById("first-disable");
 firstImg.addEventListener("mouseover", () => {
   firstCanvas.classList.toggle("reduce-opacity");
+  firstDisableBtn.classList.toggle("show-disable-btn")
 });
 firstImg.addEventListener("mouseout", () => {
   firstCanvas.classList.toggle("reduce-opacity");
+  firstDisableBtn.classList.toggle("show-disable-btn")
+});
+firstDisableBtn.addEventListener("mouseover", () => {
+  firstDisableBtn.classList.toggle("show-disable-btn")
+});
+firstDisableBtn.addEventListener("mouseout", () => {
+  firstDisableBtn.classList.toggle("show-disable-btn")
 });
 let secondCanvas = document.getElementById("second-img-canvas");
+let secondDisableBtn = document.getElementById("second-disable");
 secondImg.addEventListener("mouseover", () => {
   secondCanvas.classList.toggle("reduce-opacity");
+  secondDisableBtn.classList.toggle("show-disable-btn")
 });
 secondImg.addEventListener("mouseout", () => {
   secondCanvas.classList.toggle("reduce-opacity");
+  secondDisableBtn.classList.toggle("show-disable-btn")
+});
+secondDisableBtn.addEventListener("mouseover", () => {
+  secondDisableBtn.classList.toggle("show-disable-btn")
+});
+secondDisableBtn.addEventListener("mouseout", () => {
+  secondDisableBtn.classList.toggle("show-disable-btn")
 });
 function sendImage() {
   var formData = new FormData($("#upload-form")[0]);
