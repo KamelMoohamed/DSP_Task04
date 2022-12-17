@@ -75,7 +75,7 @@ function sendImage() {
   });
 }
 let typeIcons = document.getElementsByClassName("icon");
-let optionIcons = document.getElementsByClassName("option");
+let optionIcons = document.getElementsByClassName("img");
 let imgIcons = document.getElementsByClassName("img-selection");
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("type")) {
@@ -91,7 +91,8 @@ document.addEventListener("click", (e) => {
     for (i = 0; i < optionIcons.length; i++) {
       optionIcons[i].classList.remove("selected-option");
     }
-    e.target.classList.add("selected-option");
+    e.target.children[1].classList.add("selected-option");
+    
   }
   if (e.target.classList.contains("img-selection")) {
     for (i = 0; i < imgIcons.length; i++) {

@@ -16,6 +16,44 @@ body {
   user-select: none;
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 90px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -45px;
+    font-size: 12px;
+    opacity: 1 !important
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
 .toolbar {
   width: 90%;
   height: 7vh;
@@ -83,12 +121,15 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.3;
-  transition: 0.3s;
+}
+
+.option img{
+    transition: 0.3s;
+    opacity: 0.3 ;
 }
 
 .selected-option {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 .option img {
@@ -114,12 +155,12 @@ body {
 }
 
 .img-selection {
-  width: 3vw;
+  width: 3.2vw;
   text-align: center;
   background-color: black;
-  padding: 10px 20px;
+  padding: 10px 20px ;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   transition: 0.3s;
 }
 

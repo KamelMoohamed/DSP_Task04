@@ -17,23 +17,28 @@
   <body>
     <div class="toolbar">
       <div class="select-type">
-        <div class="type cir">
+        <div class="type cir tooltip">
+          <span class="tooltiptext">Circle (C)</span>
           <div class="icon selected-type"></div>
         </div>
-        <div class="type rec">
+        <div class="type rec tooltip">
+          <span class="tooltiptext">Rectangle (R)</span>
           <div class="icon"></div>
         </div>
       </div>
       <div class="vr-line"></div>
       <div class="select-options">
-        <div class="option all selected-option">
-          <img src="../static/imgs/icon1.png" alt="" />
+        <div class="option all tooltip selected-option">
+          <span class="tooltiptext">All</span>
+          <img src="../static/imgs/icon1.png" class="img selected-option" alt="" />
         </div>
-        <div class="option intersect">
-          <img src="../static/imgs/icon3.png" alt="" />
+        <div class="option intersect tooltip">
+          <span class="tooltiptext">intersect</span>
+          <img src="../static/imgs/icon3.png" class="img " alt="" />
         </div>
-        <div class="option difference">
-          <img src="../static/imgs/icon2.png" alt="" />
+        <div class="option difference tooltip">
+          <span class="tooltiptext">Difference</span>
+          <img src="../static/imgs/icon2.png" class="img " alt="" />
         </div>
       </div>
       <div class="vr-line"></div>
@@ -41,14 +46,14 @@
         <div class="select mag">
           <h5>Image 1</h5>
           <div class="select">
-            <div class="1 first-img img-selection selected-img">Mag</div>
+            <div class="1 first-img img-selection selected-img">Magnitude </div>
             <div class="2 second-img img-selection">Phase</div>
           </div>
         </div>
         <div class="select phase">
           <h5>Image 2</h5>
           <div class="select">
-            <div class="2 first-img img-selection">Mag</div>
+            <div class="2 first-img img-selection">Magnitude </div>
             <div class="1 second-img img-selection selected-img">Phase</div>
           </div>
         </div>
