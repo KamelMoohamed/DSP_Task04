@@ -134,11 +134,11 @@ const draw_shapes = () => {
     if (imag1Type != 0) {
       document.getElementsByClassName(
         "fourier2"
-      )[0].style.background = `url('static/uploads/${secondImageContent.mag}') no-repeat right top`;
+      )[0].style.background = `url('static/uploads/${secondImageContent.mag}') no-repeat center center`;
     } else {
       document.getElementsByClassName(
         "fourier2"
-      )[0].style.background = `url('static/uploads/${secondImageContent.phase}') no-repeat right top`;
+      )[0].style.background = `url('static/uploads/${secondImageContent.phase}') no-repeat center center`;
     }
   }
 
