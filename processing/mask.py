@@ -4,6 +4,7 @@ import numpy as np
 
 def create_mask(shape,data):
     defaults=[0,1,0]
+    print(shape)
     init=np.full(shape,defaults[data["mode"]])
     if not data["shapes"]: return np.zeros(shape)
     for i in data["shapes"]:

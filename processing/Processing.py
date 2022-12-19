@@ -6,17 +6,21 @@ from .mask import *
 class ImageEditor:
     def __init__(self) -> None:
         self.img=[Image(),Image()]
+        self.shape=(0,0)
     
     def upload_img(self:object,path:str,image_id:int,counter:int):
         dir_path = os.path.dirname(path)
         
         self.img[image_id].path=path
         self.img[image_id].img_data = cv.imread(path,cv.IMREAD_GRAYSCALE)
+        if(self.img[abs(image_id-1)].img_data.size==0):
+            self.shape= self.img[image_id].img_data.shape
+        self.img[image_id].img_data=self.crop(self.img[image_id].img_data,self.shape)
+        cv.imwrite(path, self.img[image_id].img_data)
         self.img[image_id].imgfft = np.fft.fft2(self.img[image_id].img_data)
         self.img[image_id].fshift = np.fft.fftshift(self.img[image_id].imgfft)
         self.img[image_id].magnitude_spectrum = np.abs(self.img[image_id].fshift)
         self.img[image_id].phase_spectrum= np.angle(self.img[image_id].fshift)
-
         mag_path= f"mag{counter}.jpg"
         phase_path=f"phase{counter}.jpg"
 
@@ -25,6 +29,20 @@ class ImageEditor:
 
         return [mag_path, phase_path]
     
+
+    def crop(self,img_data,shape):
+        index=np.argmax(shape)
+        ratio= shape[index]/img_data.shape[index]
+        if ratio>1:
+            width = int(img_data.shape[1] * ratio)
+            height = int(img_data.shape[0] * ratio)
+            dim = (width, height)
+            print(dim)
+            img_data = cv.resize(img_data, dim, interpolation = cv.INTER_AREA)
+        
+        axis1= abs(shape[0]-img_data.shape[0])//2
+        axis2= abs(shape[1]-img_data.shape[1])//2
+        return img_data[axis1:axis1+shape[0],axis2:axis2+shape[1]]
 
     def scale(self,image_array):
         image=((image_array - image_array.min()) * (1/(image_array.max() - image_array.min()) * 255)).astype('uint8')

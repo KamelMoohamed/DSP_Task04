@@ -27,7 +27,7 @@ def upload(image_id):
             os.makedirs(os.path.join("static","uploads"))
         # Saving the uploaded file
         file = request.files['img']
-        file_ext= file.filename.split(".")[-1]
+        file_ext= file.filename.split(".")[-1]  
         abspath = os.path.dirname(__file__)
         file_path = os.path.join(
             abspath, 'static', 'uploads', f"image{image_id}.{file_ext}")
