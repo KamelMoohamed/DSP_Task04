@@ -2,35 +2,39 @@ import cv2 as cv
 import numpy as np
 
 
-def create_mask(shape,data,canvas_dim):
-    # print(shape)
-    # print(canvas_dim)
-    scales = scales_calc(shape,canvas_dim)
-    # print(scales)
+def create_mask(Shape,data,canvas_dim):
+    scales=scales_calc(Shape,canvas_dim=canvas_dim)
     defaults=[0,1,0]
-    init=np.full(shape,defaults[data["mode"]])
-    if not data["shapes"]: return np.zeros(shape)
-    for i in data["shapes"]:
-        try:
-            mask=np.zeros(shape)
-            if i["type"]=="rect":
-                cv.rectangle(mask, (int((i["x"]-scales[2])*scales[0]), int((i["y"]-scales[3])*scales[1])), (int((i["x"]-scales[2])*scales[0]+i["width"]*scales[0]),int((i["y"]-scales[3])*scales[1]+i["height"]*scales[1])), 1, -1)
-                print(i["width"]*scales[0],i["height"]*scales[1])
-                print((i["x"]-scales[2]))
-            elif i["type"]=="ellipse":
-                
-                cv.ellipse(mask, (int((i["x"]-scales[2])*scales[0]),int((i["y"]-scales[3])*scales[1])), (int(i["radius1"]*scales[0]),int(i["radius2"]*scales[1])), 0, 0, 360, 1, -1)
-            if data["mode"]==0:
-                init=np.logical_or(init,mask)
-            elif data["mode"]==1:
-                init=np.logical_and(init,mask)
-            elif data["mode"]==2:
-                init=np.logical_xor(init,mask)
-        except:
-            pass
-    
+    init=np.full(Shape,defaults[data["mode"]])
+    for shape in data["shapes"]:
+        if shape["type"]=="rect":
+            X= int(shape["x"]+scales[2])
+            Y= int(shape["y"]+scales[3])
+            Height= int(shape["height"]*scales[1])
+            Width= int(shape["width"]*scales[0])
+            mask=np.zeros(Shape)
+            cv.rectangle(mask,(X,Y),(X+Width,Y+Height),1,-1)
+        elif shape["type"]=="ellipse":
+            X= int((shape["x"]+scales[2])*scales[0])
+            Y= int((shape["y"]+scales[3])*scales[1])
+            Height= int(shape["radius2"]*scales[1])*2
+            Width= int(shape["radius1"]*scales[0])*2
+            mask=np.zeros(Shape)
+            cv.ellipse(mask,(X,Y),(Width,Height),0,0,360,1,-1)
+        
+        if data["mode"]==0:
+            init=np.logical_or(init,mask)
+        elif data["mode"]==1:
+            init=np.logical_and(init,mask)
+        elif data["mode"]==2:
+            init=np.logical_xor(init,mask)
+    cv.imwrite("output.png",scale(init.astype(np.int8)))
+
     return init
 
+def scale(image_array):
+        image=((image_array - image_array.min()) * (1/(image_array.max() - image_array.min()) * 255)).astype('uint8')
+        return image
 
 
 def scales_calc(image_dim, canvas_dim):
@@ -50,4 +54,4 @@ def scales_calc(image_dim, canvas_dim):
         scaleY=image_dim[0]/new_canvas_h
   
 
-    return[scaleX,scaleY,offsetX,offsetY]
+    return[scaleX,scaleY,0,0]

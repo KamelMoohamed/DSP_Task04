@@ -1,6 +1,5 @@
 import os
-import sys
-from werkzeug.utils import secure_filename
+import shutil
 from flask import Flask, render_template, request, jsonify, abort
 
 from processing.Processing import ImageEditor
@@ -55,4 +54,6 @@ def mix_image():
     return jsonify({"path":f"../static/uploads/output{counter}.jpg"}),200
 
 if __name__ == '__main__':
+    if(os.path.isdir(os.path.join("static","uploads"))):
+            shutil.rmtree(os.path.join(os.path.dirname(__file__),"static","uploads"))
     app.run(debug=True) 
