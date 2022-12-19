@@ -39,9 +39,10 @@ showButton.addEventListener("click", () => {
     processData: false,
     async: true,
     success: function (data) {
+      console.log(data);
       document.getElementsByClassName(
         "output-canvas"
-      )[0].style.background = `url('static/uploads/output.jpg') no-repeat center center`;
+      )[0].style.background = `url('${data.path}') no-repeat center center`;
     },
   });
 });

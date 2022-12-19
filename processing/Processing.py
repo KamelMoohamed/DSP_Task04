@@ -7,7 +7,7 @@ class ImageEditor:
     def __init__(self) -> None:
         self.img=[Image(),Image()]
     
-    def upload_img(self:object,path:str,image_id:int):
+    def upload_img(self:object,path:str,image_id:int,counter:int):
         dir_path = os.path.dirname(path)
         
         self.img[image_id].path=path
@@ -17,8 +17,8 @@ class ImageEditor:
         self.img[image_id].magnitude_spectrum = np.abs(self.img[image_id].fshift)
         self.img[image_id].phase_spectrum= np.angle(self.img[image_id].fshift)
 
-        mag_path= f"mag{image_id}.jpg"
-        phase_path=f"phase{image_id}.jpg"
+        mag_path= f"mag{counter}.jpg"
+        phase_path=f"phase{counter}.jpg"
 
         cv.imwrite(os.path.join(dir_path, mag_path), self.scale(20*np.log(self.img[image_id].magnitude_spectrum)))
         cv.imwrite(os.path.join(dir_path, phase_path), self.scale(self.img[image_id].phase_spectrum))
@@ -30,7 +30,7 @@ class ImageEditor:
         image=((image_array - image_array.min()) * (1/(image_array.max() - image_array.min()) * 255)).astype('uint8')
         return image
 
-    def mix(self,commands):
+    def mix(self,counter,commands):
         shape= self.img[0].img_data.shape
         mag_mask=create_mask(shape,commands["mag_shapes"])
         phase_mask=create_mask(shape,commands["phase_shapes"])
@@ -45,10 +45,13 @@ class ImageEditor:
         print(fft.shape)
 
         img = np.fft.ifft2(fft)
-
+        path=os.path.join(os.path.dirname(self.img[0].path),f"output{counter}.jpg")
         if commands["magnitude"] == "empty":
-            cv.imwrite(os.path.join(os.path.dirname(self.img[0].path),"output.jpg"),self.scale(np.abs(img)))
+            image= self.scale(np.abs(img))
+            cv.imwrite(path,image)
         else:
-            cv.imwrite(os.path.join(os.path.dirname(self.img[0].path),"output.jpg"),self.scale(cv.equalizeHist(np.abs(img).astype(np.uint8))))
+            image= self.scale(cv.equalizeHist(np.abs(img).astype(np.uint8)))
+        cv.imwrite(path,image)
+        return path
 
         

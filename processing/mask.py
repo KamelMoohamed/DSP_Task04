@@ -7,7 +7,7 @@ def create_mask(shape,data):
     init=np.full(shape,defaults[data["mode"]])
     if not data["shapes"]: return np.zeros(shape)
     for i in data["shapes"]:
-        # try:
+        try:
             mask=np.zeros(shape)
             if i["type"]=="rect":
                 cv.rectangle(mask, (int(i["x"]), int(i["y"])), (int(i["x"]+i["width"]),int(i["y"]+i["height"])), 1, -1)
@@ -20,8 +20,8 @@ def create_mask(shape,data):
                 init=np.logical_and(init,mask)
             elif data["mode"]==2:
                 init=np.logical_xor(init,mask)
-        # except:
-        #     pass
+        except:
+            pass
     
     return init
 
