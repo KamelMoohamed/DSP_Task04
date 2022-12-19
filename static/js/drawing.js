@@ -424,6 +424,14 @@ const delete_shape = () => {
   draw_shapes();
 };
 
+const get_canvas_dimensions = () => {
+  canvas = document.getElementById("first-img-ft-canvas");
+  width = canvas.width;
+  height = canvas.height;
+
+  return [height, width];
+};
+
 var deleteButton = document.getElementsByClassName("delete-btn");
 deleteButton[0].addEventListener("click", (event) => {
   event.preventDefault();

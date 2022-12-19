@@ -50,8 +50,8 @@ class ImageEditor:
 
     def mix(self,counter,commands):
         shape= self.img[0].img_data.shape
-        mag_mask=create_mask(shape,commands["mag_shapes"])
-        phase_mask=create_mask(shape,commands["phase_shapes"])
+        mag_mask=create_mask(shape,commands["mag_shapes"],commands["canvas_dim"])
+        phase_mask=create_mask(shape,commands["phase_shapes"],commands["canvas_dim"])
         if commands["magnitude"]=="empty":
             shifted_fft= np.exp(1j*phase_mask*self.img[commands["phase"]].phase_spectrum)
         elif commands["phase"]=="empty":
@@ -73,3 +73,5 @@ class ImageEditor:
         return path
 
         
+
+         

@@ -1,8 +1,11 @@
 let showButton = document.getElementById("show-result-btn");
+let canvas_dim = get_canvas_dimensions();
 showButton.addEventListener("click", () => {
   let reqBody;
+  console.log(canvas_dim);
   if (imag1Type == 0) {
     reqBody = {
+      canvas_dim: canvas_dim,
       magnitude: 0,
       mag_shapes: {
         mode: mode,
@@ -16,6 +19,7 @@ showButton.addEventListener("click", () => {
     };
   } else {
     reqBody = {
+      canvas_dim: canvas_dim,
       magnitude: 1,
       mag_shapes: {
         mode: mode,
