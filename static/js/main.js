@@ -97,14 +97,14 @@ secondDisableBtn.addEventListener("click", () => {
   secondCanvas.classList.toggle("disabled");
   secondDisableBtn.classList.toggle("active");
 });
-DisableBtn.classList.toggle("show-disable-btn");
+// DisableBtn.classList.toggle("show-disable-btn");
 
 secondDisableBtn.addEventListener("click", () => {
   secondCanvas.classList.toggle("disabled");
   secondDisableBtn.classList.toggle("active");
 });
 
-DisableBtn.classList.toggle("show-disable-btn");
+// DisableBtn.classList.toggle("show-disable-btn");
 
 function sendImage(pathParams) {
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);

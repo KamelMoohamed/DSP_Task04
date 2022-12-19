@@ -87,7 +87,8 @@ let shapes = [],
   dragTR = false,
   dragBR = false,
   circleMove = false,
-  closeValue = 10;
+  closeValue = 10,
+  mouseClick = false;
 
 // Point of Mouse Down
 let startX, startY;
@@ -192,6 +193,7 @@ const is_mouse_in_shape = (x, y, shape) => {
 
 // Mouse Clicks Handling
 const mouse_down = (event) => {
+  mouseClick = true;
   mouseDown = true;
   event.preventDefault();
 
@@ -252,6 +254,7 @@ const mouse_down = (event) => {
 
 let mouse_up = (event) => {
   mouseDown = false;
+  mouseClick = false;
   let mouseX = parseInt(event.clientX - offsetX) * scaleX;
   let mouseY = parseInt(event.clientY - offsetY) * scaleY;
 
@@ -379,35 +382,37 @@ let mouse_out = (event) => {
   isSelected = false;
 };
 function change_canvas(className) {
-  canvas = document.getElementById(`${className}-img-ft-canvas`);
-  context = canvas.getContext("2d");
+  if (!mouseClick) {
+    canvas = document.getElementById(`${className}-img-ft-canvas`);
+    context = canvas.getContext("2d");
 
-  dimensions = canvas.getBoundingClientRect();
-  offsetX = dimensions.left;
-  offsetY = dimensions.top;
+    dimensions = canvas.getBoundingClientRect();
+    offsetX = dimensions.left;
+    offsetY = dimensions.top;
 
-  canvasWidth = canvas.width;
-  canvasHeight = canvas.height;
+    canvasWidth = canvas.width;
+    canvasHeight = canvas.height;
 
-  scaleX = canvas.width / dimensions.width;
-  scaleY = canvas.height / dimensions.height;
+    scaleX = canvas.width / dimensions.width;
+    scaleY = canvas.height / dimensions.height;
 
-  if (className == "first" && !isFirst) {
-    secondShapes = shapes;
-    shapes = firstShapes;
-    isFirst = true;
+    if (className == "first" && !isFirst) {
+      secondShapes = shapes;
+      shapes = firstShapes;
+      isFirst = true;
+    }
+
+    if (className == "second" && isFirst) {
+      firstShapes = shapes;
+      shapes = secondShapes;
+      isFirst = false;
+    }
+
+    canvas.onmouseup = mouse_up;
+    canvas.onmousedown = mouse_down;
+    canvas.onmousemove = mouse_move;
+    canvas.onmouseout = mouse_out;
   }
-
-  if (className == "second" && isFirst) {
-    firstShapes = shapes;
-    shapes = secondShapes;
-    isFirst = false;
-  }
-
-  canvas.onmouseup = mouse_up;
-  canvas.onmousedown = mouse_down;
-  canvas.onmousemove = mouse_move;
-  canvas.onmouseout = mouse_out;
 }
 
 // Adding Delete Button
