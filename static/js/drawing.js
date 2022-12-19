@@ -21,16 +21,19 @@ rectType[0].addEventListener("click", () => {
 let allMode = document.getElementsByClassName("all");
 allMode[0].addEventListener("click", () => {
   mode = 0;
+  draw_shapes();
 });
 
 let intersectMode = document.getElementsByClassName("intersect");
 intersectMode[0].addEventListener("click", () => {
   mode = 1;
+  draw_shapes();
 });
 
 let diffMode = document.getElementsByClassName("difference");
 diffMode[0].addEventListener("click", () => {
   mode = 2;
+  draw_shapes();
 });
 
 let img1Mag = document.getElementById("img1-mag");
