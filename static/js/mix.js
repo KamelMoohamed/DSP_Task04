@@ -2,35 +2,53 @@ let showButton = document.getElementById("show-result-btn");
 let canvas_dim = get_canvas_dimensions();
 showButton.addEventListener("click", () => {
   let reqBody;
-  console.log(canvas_dim);
   if (imag1Type == 0) {
     reqBody = {
       canvas_dim: canvas_dim,
-      magnitude: 0,
       mag_shapes: {
         mode: mode,
         shapes: firstShapes,
       },
-      phase: 1,
       phase_shapes: {
         mode: mode,
         shapes: secondShapes,
       },
     };
+    if (isImag1Enabled) {
+      reqBody = Object.assign(reqBody, { magnitude: 0 });
+    } else {
+      reqBody = Object.assign(reqBody, { magnitude: "empty" });
+    }
+
+    if (isImag2Enabled) {
+      reqBody = Object.assign(reqBody, { phase: 1 });
+    } else {
+      reqBody = Object.assign(reqBody, { phase: "empty" });
+    }
   } else {
     reqBody = {
       canvas_dim: canvas_dim,
-      magnitude: 1,
       mag_shapes: {
         mode: mode,
         shapes: secondShapes,
       },
-      phase: 0,
       phase_shapes: {
         mode: mode,
         shapes: firstShapes,
       },
     };
+
+    if (isImag1Enabled) {
+      reqBody = Object.assign(reqBody, { phase: 0 });
+    } else {
+      reqBody = Object.assign(reqBody, { phase: "empty" });
+    }
+
+    if (isImag2Enabled) {
+      reqBody = Object.assign(reqBody, { magnitude: 1 });
+    } else {
+      reqBody = Object.assign(reqBody, { magnitude: "empty" });
+    }
   }
   console.log(reqBody);
 

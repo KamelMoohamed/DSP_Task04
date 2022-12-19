@@ -6,6 +6,7 @@ let isImag2Enabled = true;
 let imag1Type = 0;
 let firstImageContent = null;
 let secondImageContent = null;
+let bothType = false;
 
 // Toolbar event handling
 let circleType = document.getElementsByClassName("cir");
@@ -58,6 +59,22 @@ let img2Phase = document.getElementById("img2-phase");
 img2Phase.addEventListener("click", () => {
   imag1Type = 0;
   toggle_images();
+});
+
+let img1Both = document.getElementById("img1-both");
+img1Both.addEventListener("click", () => {
+  bothType = true;
+  toggle_images();
+});
+
+let enable1 = document.getElementById("first-disable");
+enable1.addEventListener("click", () => {
+  isImag1Enabled = !isImag1Enabled;
+});
+
+let enable2 = document.getElementById("second-disable");
+enable2.addEventListener("click", () => {
+  isImag2Enabled = !isImag2Enabled;
 });
 
 // Handling Mouse Click on canvas
@@ -408,9 +425,12 @@ const delete_shape = () => {
 };
 
 const get_canvas_dimensions = () => {
-  canvas = document.getElementById("first-img-ft-canvas");
-  width = canvas.width;
-  height = canvas.height;
+  c = document.getElementById("first-img-ft-canvas");
+  width = c.width;
+  height = c.height;
+
+  console.log(width);
+  console.log(height);
 
   return [height, width];
 };

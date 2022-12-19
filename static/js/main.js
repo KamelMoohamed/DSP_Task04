@@ -1,3 +1,5 @@
+// let realCanvasWidth, realCanvasHeight;
+
 let uploadImage = document.getElementsByClassName("upload-img");
 let firstImg = document.getElementById("img1");
 
@@ -59,6 +61,33 @@ function makeGray(e) {
   }
   var canvas = document.getElementById(e);
   gray_image.drawTo(canvas);
+  console.log(bothType);
+
+  if (bothType) {
+    if (e == "first-img-canvas") {
+      secondDisableBtn.classList.add("show-disable-btn");
+      secondCanvas.classList.remove("disabled");
+      secondDisableBtn.classList.remove("active");
+      var canvas2 = document.getElementById("second-img-canvas");
+      gray_image.drawTo(canvas2);
+      for (i = 0; i < uploadImage.length; i++) {
+        if (uploadImage[i].classList[1] == secondImg.classList[0]) {
+          uploadImage[i].classList.add("hide-frame");
+        }
+      }
+    } else {
+      firstDisableBtn.classList.add("show-disable-btn");
+      firstCanvas.classList.remove("disabled");
+      firstDisableBtn.classList.remove("active");
+      var canvas1 = document.getElementById("first-img-canvas");
+      gray_image.drawTo(canvas1);
+      for (i = 0; i < uploadImage.length; i++) {
+        if (uploadImage[i].classList[1] == firstImg.classList[0]) {
+          uploadImage[i].classList.add("hide-frame");
+        }
+      }
+    }
+  }
 }
 
 let firstCanvas = document.getElementById("first-img-canvas");
@@ -132,9 +161,9 @@ function toggle_images() {
   }
 }
 
-var firstFtCanvas = document.getElementById("first-img-ft-canvas")
-var secondFtCanvas = document.getElementById("second-img-ft-canvas")
-let canvContainer = document.querySelector(".canv-cont")
+var firstFtCanvas = document.getElementById("first-img-ft-canvas");
+var secondFtCanvas = document.getElementById("second-img-ft-canvas");
+let canvContainer = document.querySelector(".canv-cont");
 
 function sendImage(pathParams) {
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
@@ -148,23 +177,46 @@ function sendImage(pathParams) {
     processData: false,
     async: true,
     success: function (data) {
-      console.log(canvContainer.clientWidth)
-      if (firstCanvas.width <= firstCanvas.height) { 
-        firstFtCanvas.style.height = "100%"
-        firstFtCanvas.style.width = `${firstCanvas.width * (canvContainer.clientHeight / firstCanvas.height)}px`
+      if (firstCanvas.width <= firstCanvas.height) {
+        firstFtCanvas.style.height = "100%";
+        firstFtCanvas.style.width = `${
+          firstCanvas.width * (canvContainer.clientHeight / firstCanvas.height)
+        }px`;
       } else {
-        firstFtCanvas.style.width = "100%"
-        firstFtCanvas.style.height = `${firstCanvas.height * (canvContainer.clientWidth / firstCanvas.width)}px`
+        firstFtCanvas.style.width = "100%";
+        firstFtCanvas.style.height = `${
+          firstCanvas.height * (canvContainer.clientWidth / firstCanvas.width)
+        }px`;
       }
-      if (secondCanvas.width <= secondCanvas.height) { 
-        secondFtCanvas.style.height = "100%"
-        secondFtCanvas.style.width = `${secondCanvas.width * (canvContainer.clientHeight / secondCanvas.height)}px`
+      if (secondCanvas.width <= secondCanvas.height) {
+        secondFtCanvas.style.height = "100%";
+        secondFtCanvas.style.width = `${
+          secondCanvas.width *
+          (canvContainer.clientHeight / secondCanvas.height)
+        }px`;
       } else {
-        secondFtCanvas.style.width = "100%"
-        secondFtCanvas.style.height = `${secondCanvas.height * (canvContainer.clientWidth / secondCanvas.width)}px`
+        secondFtCanvas.style.width = "100%";
+        secondFtCanvas.style.height = `${
+          secondCanvas.height * (canvContainer.clientWidth / secondCanvas.width)
+        }px`;
       }
-      console.log(data);
-      if (pathParams == 0) {
+      // realCanvasHeight = firstFtCanvas.height;
+      // realCanvasWidth = firstFtCanvas.width;
+      // console.log(realCanvasHeight);
+      // console.log(realCanvasWidth);
+
+      if (bothType) {
+        imagesContent[0] = {
+          uploaded: true,
+          mag: data.path[1],
+          phase: data.path[2],
+        };
+        imagesContent[1] = {
+          uploaded: true,
+          mag: data.path[1],
+          phase: data.path[2],
+        };
+      } else if (pathParams == 0) {
         imagesContent[0] = {
           uploaded: true,
           mag: data.path[1],
