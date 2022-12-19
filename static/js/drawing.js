@@ -99,12 +99,12 @@ let startX, startY;
 
 // Drawing Functions
 const drawRect = (shape) => {
-  context.fillStyle = "grey";
+  context.fillStyle = "blue";
   context.fillRect(shape.x, shape.y, shape.width, shape.height);
 };
 
 const drawEllipse = (shape) => {
-  context.fillStyle = "grey";
+  context.fillStyle = "blue";
 
   context.beginPath();
   context.ellipse(

@@ -132,6 +132,9 @@ function toggle_images() {
   }
 }
 
+var firstFtCanvas = document.getElementById("first-img-ft-canvas")
+var secondFtCanvas = document.getElementById("second-img-ft-canvas")
+
 function sendImage(pathParams) {
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
 
@@ -144,6 +147,20 @@ function sendImage(pathParams) {
     processData: false,
     async: true,
     success: function (data) {
+      if (firstCanvas.width <= firstCanvas.height) { 
+        firstFtCanvas.style.height = "100%"
+        firstFtCanvas.style.width = `${firstCanvas.width * (270.5 / firstCanvas.height)}px`
+      } else {
+        firstFtCanvas.style.width = "100%"
+        firstFtCanvas.style.height = `${firstCanvas.height * (381.5 / firstCanvas.width)}px`
+      }
+      if (secondCanvas.width <= secondCanvas.height) { 
+        secondFtCanvas.style.height = "100%"
+        secondFtCanvas.style.width = `${secondCanvas.width * (270.5 / secondCanvas.height)}px`
+      } else {
+        secondFtCanvas.style.width = "100%"
+        secondFtCanvas.style.height = `${secondCanvas.height * (381.5 / secondCanvas.width)}px`
+      }
       console.log(data);
       if (pathParams == 0) {
         imagesContent[0] = {
