@@ -134,6 +134,7 @@ function toggle_images() {
 
 var firstFtCanvas = document.getElementById("first-img-ft-canvas")
 var secondFtCanvas = document.getElementById("second-img-ft-canvas")
+let canvContainer = document.querySelector(".canv-cont")
 
 function sendImage(pathParams) {
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
@@ -147,19 +148,20 @@ function sendImage(pathParams) {
     processData: false,
     async: true,
     success: function (data) {
+      console.log(canvContainer.clientWidth)
       if (firstCanvas.width <= firstCanvas.height) { 
         firstFtCanvas.style.height = "100%"
-        firstFtCanvas.style.width = `${firstCanvas.width * (270.5 / firstCanvas.height)}px`
+        firstFtCanvas.style.width = `${firstCanvas.width * (canvContainer.clientHeight / firstCanvas.height)}px`
       } else {
         firstFtCanvas.style.width = "100%"
-        firstFtCanvas.style.height = `${firstCanvas.height * (381.5 / firstCanvas.width)}px`
+        firstFtCanvas.style.height = `${firstCanvas.height * (canvContainer.clientWidth / firstCanvas.width)}px`
       }
       if (secondCanvas.width <= secondCanvas.height) { 
         secondFtCanvas.style.height = "100%"
-        secondFtCanvas.style.width = `${secondCanvas.width * (270.5 / secondCanvas.height)}px`
+        secondFtCanvas.style.width = `${secondCanvas.width * (canvContainer.clientHeight / secondCanvas.height)}px`
       } else {
         secondFtCanvas.style.width = "100%"
-        secondFtCanvas.style.height = `${secondCanvas.height * (381.5 / secondCanvas.width)}px`
+        secondFtCanvas.style.height = `${secondCanvas.height * (canvContainer.clientWidth / secondCanvas.width)}px`
       }
       console.log(data);
       if (pathParams == 0) {
