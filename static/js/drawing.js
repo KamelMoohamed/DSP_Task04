@@ -36,21 +36,25 @@ diffMode[0].addEventListener("click", () => {
 let img1Mag = document.getElementById("img1-mag");
 img1Mag.addEventListener("click", () => {
   imag1Type = 0;
+  toggle_images();
 });
 
 let img1Phase = document.getElementById("img1-phase");
 img1Phase.addEventListener("click", () => {
   imag1Type = 1;
+  toggle_images();
 });
 
 let img2Mag = document.getElementById("img2-mag");
 img2Mag.addEventListener("click", () => {
   imag1Type = 1;
+  toggle_images();
 });
 
 let img2Phase = document.getElementById("img2-phase");
 img2Phase.addEventListener("click", () => {
   imag1Type = 0;
+  toggle_images();
 });
 
 // Handling Mouse Click on canvas
@@ -117,30 +121,6 @@ const drawEllipse = (shape) => {
 
 const draw_shapes = () => {
   context.clearRect(0, 0, canvasWidth, canvasHeight);
-
-  if (firstImageContent != null) {
-    if (imag1Type == 0) {
-      document.getElementsByClassName(
-        "fourier1"
-      )[0].style.background = `url('static/uploads/${firstImageContent.mag}') no-repeat center center`;
-    } else {
-      document.getElementsByClassName(
-        "fourier1"
-      )[0].style.background = `url('static/uploads/${firstImageContent.phase}') no-repeat center center`;
-    }
-  }
-
-  if (secondImageContent != null) {
-    if (imag1Type != 0) {
-      document.getElementsByClassName(
-        "fourier2"
-      )[0].style.background = `url('static/uploads/${secondImageContent.mag}') no-repeat center center`;
-    } else {
-      document.getElementsByClassName(
-        "fourier2"
-      )[0].style.background = `url('static/uploads/${secondImageContent.phase}') no-repeat center center`;
-    }
-  }
 
   if (mode == 2) {
     context.globalCompositeOperation = "xor";

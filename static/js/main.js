@@ -1,5 +1,15 @@
 let uploadImage = document.getElementsByClassName("upload-img");
 let firstImg = document.getElementById("img1");
+
+let imagesContent = [
+  {
+    uploaded: false,
+  },
+  {
+    uploaded: false,
+  },
+];
+
 firstImg.addEventListener("change", (e) => {
   firstDisableBtn.classList.add("show-disable-btn");
   firstCanvas.classList.remove("disabled");
@@ -97,6 +107,31 @@ secondDisableBtn.addEventListener("click", () => {
   secondDisableBtn.classList.toggle("active");
 });
 
+function toggle_images() {
+  if (imagesContent[0].uploaded) {
+    if (imag1Type == 0) {
+      document.getElementsByClassName(
+        "fourier1"
+      )[0].style.background = `url('static/uploads/${imagesContent[0].mag}') no-repeat center center`;
+    } else {
+      document.getElementsByClassName(
+        "fourier1"
+      )[0].style.background = `url('static/uploads/${imagesContent[0].phase}') no-repeat center center`;
+    }
+  }
+  if (imagesContent[1].uploaded) {
+    if (imag1Type != 0) {
+      document.getElementsByClassName(
+        "fourier2"
+      )[0].style.background = `url('static/uploads/${imagesContent[1].mag}') no-repeat center center`;
+    } else {
+      document.getElementsByClassName(
+        "fourier2"
+      )[0].style.background = `url('static/uploads/${imagesContent[1].phase}') no-repeat center center`;
+    }
+  }
+}
+
 function sendImage(pathParams) {
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
 
@@ -109,25 +144,28 @@ function sendImage(pathParams) {
     processData: false,
     async: true,
     success: function (data) {
+      console.log(data);
       if (pathParams == 0) {
-        firstImageContent = {
+        imagesContent[0] = {
+          uploaded: true,
           mag: data.path[1],
           phase: data.path[2],
         };
       } else {
-        secondImageContent = {
+        imagesContent[1] = {
+          uploaded: true,
           mag: data.path[1],
           phase: data.path[2],
         };
       }
-
-      console.log(firstImageContent);
+      toggle_images();
     },
   });
 }
 let typeIcons = document.getElementsByClassName("icon");
 let optionIcons = document.getElementsByClassName("img");
 let imgIcons = document.getElementsByClassName("img-selection");
+
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("type")) {
     for (i = 0; i < typeIcons.length; i++) {
