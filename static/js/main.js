@@ -12,7 +12,9 @@ let imagesContent = [
   },
 ];
 
+
 firstImg.addEventListener("change", (e) => {
+  bothBtns.style.display = "flex"
   firstDisableBtn.classList.add("show-disable-btn");
   firstCanvas.classList.remove("disabled");
   firstDisableBtn.classList.remove("active");
@@ -27,6 +29,7 @@ firstImg.addEventListener("change", (e) => {
 });
 let secondImg = document.getElementById("img2");
 secondImg.addEventListener("change", (e) => {
+  bothBtns.style.display = "flex"
   secondDisableBtn.classList.add("show-disable-btn");
   secondCanvas.classList.remove("disabled");
   secondDisableBtn.classList.remove("active");
@@ -61,53 +64,10 @@ function makeGray(e) {
   }
   var canvas = document.getElementById(e);
   gray_image.drawTo(canvas);
-  console.log(bothType);
-
-  if (bothType) {
-    if (e == "first-img-canvas") {
-      secondDisableBtn.classList.add("show-disable-btn");
-      secondCanvas.classList.remove("disabled");
-      secondDisableBtn.classList.remove("active");
-      var canvas2 = document.getElementById("second-img-canvas");
-      gray_image.drawTo(canvas2);
-      for (i = 0; i < uploadImage.length; i++) {
-        if (uploadImage[i].classList[1] == secondImg.classList[0]) {
-          uploadImage[i].classList.add("hide-frame");
-        }
-      }
-    } else {
-      firstDisableBtn.classList.add("show-disable-btn");
-      firstCanvas.classList.remove("disabled");
-      firstDisableBtn.classList.remove("active");
-      var canvas1 = document.getElementById("first-img-canvas");
-      gray_image.drawTo(canvas1);
-      for (i = 0; i < uploadImage.length; i++) {
-        if (uploadImage[i].classList[1] == firstImg.classList[0]) {
-          uploadImage[i].classList.add("hide-frame");
-        }
-      }
-    }
-  }
 }
 
 let firstCanvas = document.getElementById("first-img-canvas");
 let firstDisableBtn = document.getElementById("first-disable");
-firstImg.addEventListener("mouseover", () => {
-  firstCanvas.classList.toggle("reduce-opacity");
-  firstDisableBtn.classList.toggle("show-disable-btn");
-  firstCanvas.classList.add("reduce-opacity");
-});
-
-firstDisableBtn.addEventListener("mouseover", () => {
-  firstDisableBtn.classList.toggle("show-disable-btn");
-});
-
-firstImg.addEventListener("mouseout", () => {
-  firstCanvas.classList.toggle("reduce-opacity");
-  firstDisableBtn.classList.toggle("show-disable-btn");
-  firstCanvas.classList.remove("reduce-opacity");
-});
-
 firstDisableBtn.addEventListener("click", () => {
   firstCanvas.classList.toggle("disabled");
   firstDisableBtn.classList.toggle("active");
@@ -115,21 +75,6 @@ firstDisableBtn.addEventListener("click", () => {
 
 let secondCanvas = document.getElementById("second-img-canvas");
 let secondDisableBtn = document.getElementById("second-disable");
-secondImg.addEventListener("mouseover", () => {
-  secondCanvas.classList.toggle("reduce-opacity");
-  secondDisableBtn.classList.toggle("show-disable-btn");
-  secondCanvas.classList.add("reduce-opacity");
-});
-secondImg.addEventListener("mouseout", () => {
-  secondCanvas.classList.toggle("reduce-opacity");
-  secondDisableBtn.classList.toggle("show-disable-btn");
-  secondCanvas.classList.remove("reduce-opacity");
-});
-
-secondDisableBtn.addEventListener("click", () => {
-  secondCanvas.classList.toggle("disabled");
-  secondDisableBtn.classList.toggle("active");
-});
 
 secondDisableBtn.addEventListener("click", () => {
   secondCanvas.classList.toggle("disabled");
@@ -266,5 +211,53 @@ document.addEventListener("click", (e) => {
         .getElementsByClassName(`${e.target.classList[0]}`)
         [i].classList.add("selected-img");
     }
+  }
+});
+
+function editImage(pathParams) {
+  $.ajax({
+    type: "POST",
+    url: `/edit-image/${pathParams}`,
+    contentType: false,
+    cache: false,
+    processData: false,
+    async: true,
+    success: function (data) {
+      console.log("SUCCESS");
+    },
+  });
+}
+
+let bothBtns = document.getElementById("copy-img");
+bothBtns.addEventListener("click", () => {
+  if (firstImg.value) {
+    secondDisableBtn.classList.add("show-disable-btn");
+    secondCanvas.classList.remove("disabled");
+    secondDisableBtn.classList.remove("active");
+    var canvas2 = document.getElementById("second-img-canvas");
+    gray_image.drawTo(canvas2);
+    for (i = 0; i < uploadImage.length; i++) {
+      if (uploadImage[i].classList[1] == secondImg.classList[0]) {
+        uploadImage[i].classList.add("hide-frame");
+      }
+    }
+    imagesContent[1] = imagesContent[0];
+    console.log(imagesContent);
+    toggle_images();
+    editImage(0);
+  } else if (secondImg.value) {
+    firstDisableBtn.classList.add("show-disable-btn");
+    firstCanvas.classList.remove("disabled");
+    firstDisableBtn.classList.remove("active");
+    var canvas1 = document.getElementById("first-img-canvas");
+    gray_image.drawTo(canvas1);
+    for (i = 0; i < uploadImage.length; i++) {
+      if (uploadImage[i].classList[1] == firstImg.classList[0]) {
+        uploadImage[i].classList.add("hide-frame");
+      }
+    }
+    imagesContent[0] = imagesContent[1];
+    toggle_images();
+    editImage(1);
   }
 });

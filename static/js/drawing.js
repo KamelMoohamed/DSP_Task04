@@ -61,11 +61,11 @@ img2Phase.addEventListener("click", () => {
   toggle_images();
 });
 
-let img1Both = document.getElementById("img1-both");
-img1Both.addEventListener("click", () => {
-  bothType = true;
-  toggle_images();
-});
+// let img1Both = document.getElementById("img1-both");
+// img1Both.addEventListener("click", () => {
+//   bothType = true;
+//   toggle_images();
+// });
 
 let enable1 = document.getElementById("first-disable");
 enable1.addEventListener("click", () => {

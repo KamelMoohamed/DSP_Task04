@@ -198,6 +198,40 @@ body {
   padding: 7px;
 }
 
+.both-btn{
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  font-size: 16px;
+  color: var(--primary-color);
+  text-align: center;
+  /* line-height: 3; */
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.both.tooltiptext{
+  margin-top: -40%;
+}
+
+.both-btn:hover{
+  color: var(--hover-color);
+}
+
+.both-btn i {
+  pointer-events: none;
+}
+
 .original-canvas {
   position: absolute;
   right: -50%;
@@ -287,7 +321,7 @@ body {
 
 .disabled{
   opacity: 0.1 !important;
-  transition: 0.5;
+  transition: 0.3s ease-in-out;
 }
 
 

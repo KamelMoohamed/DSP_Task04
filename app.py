@@ -38,10 +38,11 @@ def upload(image_id):
 
     return "",400
 
-@app.route("/edit-image/<int:image_id>")
+@app.route("/edit-image/<int:image_id>", methods = ['POST'])
 def edit_image(image_id):
     global editor
     editor.img[abs(image_id-1)]=editor.img[image_id]
+    print(editor.img)
     return "",201
 
 @app.route("/mix-image",methods=["POST"])
