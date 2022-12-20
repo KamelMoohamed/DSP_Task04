@@ -2,19 +2,19 @@ import cv2 as cv
 import numpy as np
 
 
-def create_mask(Shape,data,canvas_dim):
+def create_mask(Shape,data,canvas_dim,count):
     scales=scales_calc(Shape,canvas_dim=canvas_dim)
-    print(Shape)
     defaults=[0,1,0]
     init=np.full(Shape,defaults[data["mode"]])
     for shape in data["shapes"]:
         try:
             if shape["type"]=="rect":
-                X= int(shape["x"]+scales[2])
-                Y= int(shape["y"]+scales[3])
+                X= int(shape["x"]*scales[0])
+                Y= int(shape["y"]*scales[1])
+                if(X<0): X= 0
+                if(Y<0): Y= 0
                 Height= int(shape["height"]*scales[1])
                 Width= int(shape["width"]*scales[0])
-                print(Height, Width)
                 mask=np.zeros(Shape)
                 cv.rectangle(mask,(X,Y),(X+Width,Y+Height),1,-1)
             elif shape["type"]=="ellipse":
@@ -33,7 +33,7 @@ def create_mask(Shape,data,canvas_dim):
                 init=np.logical_xor(init,mask)
         except:
             pass
-    cv.imwrite("output.png",scale(init.astype(np.int8)))
+    cv.imwrite(f"output{count}.png",scale(init.astype(np.int8)))
 
     return init
 
@@ -43,20 +43,8 @@ def scale(image_array):
 
 
 def scales_calc(image_dim, canvas_dim):
-    if (image_dim[0] >= image_dim[1]):
-        scaleY = image_dim[0]/ canvas_dim[0]
-        new_canvas_w = image_dim[1]/scaleY
-        # offsetX= canvas_dim[1]-new_canvas_w
-        # offsetX= 0.5*offsetX
-        # offsetY=0
-        scaleX=image_dim[1]/new_canvas_w
-    elif (image_dim[0]<image_dim[1]):
-        scaleX= image_dim[1]/ canvas_dim[1]
-        new_canvas_h= image_dim[0]/scaleX
-        # offsetY= canvas_dim[0]-new_canvas_h
-        # offsetY= 0.5*offsetY
-        # offsetX=0
-        scaleY=image_dim[0]/new_canvas_h
-  
+
+    scaleY = image_dim[0]/ canvas_dim[0]
+    scaleX = image_dim[1]/ canvas_dim[1]
 
     return[scaleX,scaleY,0,0]

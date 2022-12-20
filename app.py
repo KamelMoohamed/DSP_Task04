@@ -34,9 +34,15 @@ def upload(image_id):
         paths=editor.upload_img(path=file_path,image_id=image_id,counter=imgCounter)
         imgCounter+=1
         counter=0
-        return jsonify({"path":[f"../static/uploads/image{image_id}.{file_ext}",*paths]}),200
+        return jsonify({"path":[f"../static/uploads/image{image_id}.{file_ext}",*paths]}),201
 
     return "",400
+
+@app.route("/edit-image/<int:image_id>")
+def edit_image(image_id):
+    global editor
+    editor.img[abs(image_id-1)]=editor.img[image_id]
+    return "",201
 
 @app.route("/mix-image",methods=["POST"])
 def mix_image():
