@@ -379,7 +379,9 @@ let mouse_move = (event) => {
 
 let mouse_out = (event) => {
   event.preventDefault();
-  isSelected = false;
+  if (mouseDown) {
+    mouse_up();
+  }
 };
 function change_canvas(className) {
   if (!mouseClick) {
@@ -429,9 +431,6 @@ const get_canvas_dimensions = () => {
   width = c.width;
   height = c.height;
 
-  console.log(width);
-  console.log(height);
-
   return [height, width];
 };
 
@@ -443,7 +442,27 @@ deleteButton[0].addEventListener("click", (event) => {
 
 document.addEventListener("keypress", function (event) {
   event.preventDefault();
+  const cir = document.getElementsByClassName("cir")[0];
+  const rec = document.getElementsByClassName("rec")[0];
   if (event.key == "d") {
     delete_shape();
+  } else if (event.key == "c") {
+    isCircleType = true;
+    if (cir.classList.contains("type")) {
+      for (i = 0; i < typeIcons.length; i++) {
+        typeIcons[i].classList.remove("selected-type");
+      }
+      let selectedType = document.querySelector(`.${cir.classList[1]} .icon`);
+      selectedType.classList.add("selected-type");
+    }
+  } else if (event.key == "r") {
+    isCircleType = false;
+    if (rec.classList.contains("type")) {
+      for (i = 0; i < typeIcons.length; i++) {
+        typeIcons[i].classList.remove("selected-type");
+      }
+      let selectedType = document.querySelector(`.${rec.classList[1]} .icon`);
+      selectedType.classList.add("selected-type");
+    }
   }
 });
