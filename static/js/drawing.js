@@ -160,6 +160,10 @@ const draw_shapes = () => {
       context.globalAlpha = 0.4;
     }
   }
+
+  if (currentShapeIndex != null) {
+    drawHandles(shapes[currentShapeIndex]);
+  }
 };
 
 // Helper Checks
@@ -190,6 +194,26 @@ const is_mouse_in_shape = (x, y, shape) => {
     return point < 1;
   }
 };
+
+function drawCircle(x, y, radius) {
+  context.fillStyle = "yellow";
+  context.beginPath();
+  context.arc(x, y, radius, 0, 2 * Math.PI);
+  context.fill();
+}
+function drawHandles(rect) {
+  if (rect.type == "rect") {
+    drawCircle(rect.x, rect.y, 2);
+    drawCircle(rect.x + rect.width, rect.y, 2);
+    drawCircle(rect.x + rect.width, rect.y + rect.height, 2);
+    drawCircle(rect.x, rect.height + rect.y, 2);
+  } else {
+    drawCircle(rect.x, rect.y + rect.radius2, 2);
+    drawCircle(rect.x, rect.y - rect.radius2, 2);
+    drawCircle(rect.x + rect.radius1, rect.y, 2);
+    drawCircle(rect.x - rect.radius1, rect.y, 2);
+  }
+}
 
 // Mouse Clicks Handling
 const mouse_down = (event) => {
@@ -238,8 +262,17 @@ const mouse_down = (event) => {
         isSelected = true;
       }
     } else {
-      let distance = calculate_circle_distance(startX, startY, shape);
-      if ((distance > 0.9 && distance < 1.1) || distance == Infinity) {
+      // let distance = calculate_circle_distance(startX, startY, shape);
+      // if ((distance > 0.9 && distance < 1.1) || distance == Infinity) {
+
+      if (
+        (checkCloseEnough(startX, shape.x) &&
+          (checkCloseEnough(startY, shape.y + shape.radius2) ||
+            checkCloseEnough(startY, shape.y - shape.radius2))) ||
+        (checkCloseEnough(startY, shape.y) &&
+          (checkCloseEnough(startX, shape.x + shape.radius1) ||
+            checkCloseEnough(startX, shape.x - shape.radius1)))
+      ) {
         currentShapeIndex = index;
         circleMove = true;
       } else if (is_mouse_in_shape(startX, startY, shape)) {
@@ -308,6 +341,8 @@ let mouse_move = (event) => {
     return;
   }
 
+  console.log(circleMove);
+
   if (dragBL || dragBR || dragTL || dragTR || circleMove) {
     let shape = shapes[currentShapeIndex];
     if (dragTL) {
@@ -327,8 +362,14 @@ let mouse_move = (event) => {
       shape.width = Math.abs(shape.x - mouseX);
       shape.height = Math.abs(shape.y - mouseY);
     } else if (circleMove) {
-      shape.width = mouseX;
-      shape.height = mouseY;
+      // shape.radius1 = mouseX;
+      // shape.radius2 = mouseY;
+      if (mouseX == shape.x) {
+        shape.radius2 = Math.max(shape.y, mouseY) - Math.min(shape.y, mouseY);
+      } else if (mouseY == shape.y);
+      {
+        shape.radius1 = Math.max(shape.x, mouseX) - Math.min(shape.x, mouseX);
+      }
     }
     draw_shapes();
   } else {
