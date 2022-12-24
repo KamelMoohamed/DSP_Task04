@@ -1,6 +1,6 @@
 let showButton = document.getElementById("show-result-btn");
 let canvas_dim = get_canvas_dimensions();
-showButton.addEventListener("click", () => {
+const mix_images = () => {
   let reqBody;
   if (imag1Type == 0) {
     reqBody = {
@@ -67,4 +67,4 @@ showButton.addEventListener("click", () => {
       )[0].style.background = `url('${data.path}') no-repeat center center`;
     },
   });
-});
+};

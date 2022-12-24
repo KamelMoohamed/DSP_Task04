@@ -1,6 +1,8 @@
 import os
 import shutil
 from flask import Flask, render_template, request, jsonify, abort
+import numpy as np
+import copy
 
 from processing.Processing import ImageEditor
 
@@ -9,6 +11,7 @@ app = Flask(__name__, template_folder="templates")
 editor= ImageEditor()
 counter=0
 imgCounter=0
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('main.html')
@@ -41,9 +44,11 @@ def upload(image_id):
 @app.route("/edit-image/<int:image_id>", methods = ['POST'])
 def edit_image(image_id):
     global editor
-    editor.img[abs(image_id-1)]=editor.img[image_id]
+    editor.img[abs(image_id-1)]=copy.copy(editor.img[image_id])
     print(editor.img)
     return "",201
+
+
 
 @app.route("/mix-image",methods=["POST"])
 def mix_image():

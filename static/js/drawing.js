@@ -7,6 +7,8 @@ let imag1Type = 0;
 let firstImageContent = null;
 let secondImageContent = null;
 let bothType = false;
+let firstCondition = false;
+let secondCondition = false;
 
 // Toolbar event handling
 let circleType = document.getElementsByClassName("cir");
@@ -202,6 +204,7 @@ function drawCircle(x, y, radius) {
   context.fill();
 }
 function drawHandles(rect) {
+  // console.log(rect);
   if (rect.type == "rect") {
     drawCircle(rect.x, rect.y, 2);
     drawCircle(rect.x + rect.width, rect.y, 2);
@@ -266,15 +269,21 @@ const mouse_down = (event) => {
       // if ((distance > 0.9 && distance < 1.1) || distance == Infinity) {
 
       if (
-        (checkCloseEnough(startX, shape.x) &&
-          (checkCloseEnough(startY, shape.y + shape.radius2) ||
-            checkCloseEnough(startY, shape.y - shape.radius2))) ||
-        (checkCloseEnough(startY, shape.y) &&
-          (checkCloseEnough(startX, shape.x + shape.radius1) ||
-            checkCloseEnough(startX, shape.x - shape.radius1)))
+        checkCloseEnough(startX, shape.x) &&
+        (checkCloseEnough(startY, shape.y + shape.radius2) ||
+          checkCloseEnough(startY, shape.y - shape.radius2))
       ) {
         currentShapeIndex = index;
         circleMove = true;
+        firstCondition = true;
+      } else if (
+        checkCloseEnough(startY, shape.y) &&
+        (checkCloseEnough(startX, shape.x + shape.radius1) ||
+          checkCloseEnough(startX, shape.x - shape.radius1))
+      ) {
+        currentShapeIndex = index;
+        circleMove = true;
+        secondCondition = true;
       } else if (is_mouse_in_shape(startX, startY, shape)) {
         currentShapeIndex = index;
         isSelected = true;
@@ -292,7 +301,7 @@ let mouse_up = (event) => {
   let mouseY = parseInt(event.clientY - offsetY) * scaleY;
 
   event.preventDefault();
-  if (!isSelected && !dragBL && !dragBR && !dragTL && !dragTR) {
+  if (!isSelected && !dragBL && !dragBR && !dragTL && !dragTR && !circleMove) {
     if (!isCircleType) {
       if (
         Math.max(startX, mouseX) - Math.min(startX, mouseX) == 0 ||
@@ -329,7 +338,15 @@ let mouse_up = (event) => {
   }
   draw_shapes();
   isSelected = false;
-  dragBL = dragBR = dragTL = dragTR = circleMove = false;
+  dragBL =
+    dragBR =
+    dragTL =
+    dragTR =
+    circleMove =
+    firstCondition =
+    secondCondition =
+      false;
+  mix_images();
 };
 
 let mouse_move = (event) => {
@@ -340,8 +357,6 @@ let mouse_move = (event) => {
   if (!mouseDown) {
     return;
   }
-
-  console.log(circleMove);
 
   if (dragBL || dragBR || dragTL || dragTR || circleMove) {
     let shape = shapes[currentShapeIndex];
@@ -362,11 +377,9 @@ let mouse_move = (event) => {
       shape.width = Math.abs(shape.x - mouseX);
       shape.height = Math.abs(shape.y - mouseY);
     } else if (circleMove) {
-      // shape.radius1 = mouseX;
-      // shape.radius2 = mouseY;
-      if (mouseX == shape.x) {
-        shape.radius2 = Math.max(shape.y, mouseY) - Math.min(shape.y, mouseY);
-      } else if (mouseY == shape.y);
+      if (firstCondition) {
+        shape.radius2 = mouseY - shape.y;
+      } else if (secondCondition);
       {
         shape.radius1 = Math.max(shape.x, mouseX) - Math.min(shape.x, mouseX);
       }

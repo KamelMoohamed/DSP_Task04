@@ -26,7 +26,6 @@ class ImageEditor:
 
         cv.imwrite(os.path.join(dir_path, mag_path), self.scale(20*np.log(self.img[image_id].magnitude_spectrum)))
         cv.imwrite(os.path.join(dir_path, phase_path), self.scale(self.img[image_id].phase_spectrum))
-        
 
         return [mag_path, phase_path]
     
@@ -53,22 +52,32 @@ class ImageEditor:
         shape= self.shape
         mag_mask=create_mask(shape,commands["mag_shapes"],commands["canvas_dim"],1)
         phase_mask=create_mask(shape,commands["phase_shapes"],commands["canvas_dim"],2)
-        if commands["magnitude"]=="empty":
-            shifted_fft= np.exp(1j*phase_mask*self.img[commands["phase"]].phase_spectrum)
-        elif commands["phase"]=="empty":
+        if np.max(mag_mask)==0:
+            commands["magnitude"]="empty"
+        if np.max(phase_mask)==0:
+            commands["phase"]="empty"
+        print(commands)
+
+        if commands["magnitude"]!="empty" and commands["phase"]!="empty":
+            shifted_fft=mag_mask*self.img[commands["magnitude"]].magnitude_spectrum* np.exp(1j*phase_mask*self.img[commands["phase"]].phase_spectrum)
+        elif commands["magnitude"]=="empty" and commands["phase"]!="empty":
+            shifted_fft= 1000*np.exp(1j*phase_mask*self.img[commands["phase"]].phase_spectrum)
+        elif commands["phase"]=="empty" and commands["magnitude"]!="empty":
             shifted_fft= mag_mask*self.img[commands["magnitude"]].magnitude_spectrum
         else:
-            shifted_fft=mag_mask*self.img[commands["magnitude"]].magnitude_spectrum* np.exp(1j*phase_mask*self.img[commands["phase"]].phase_spectrum)
-        
-        max_point=np.where(self.img[commands["magnitude"]].magnitude_spectrum==self.img[commands["magnitude"]].magnitude_spectrum.max())
-        max_point=(max_point[0][0],max_point[1][0])
+            shifted_fft=np.zeros(self.shape)
+        percentage=0.7
+        try:
+            max_point=np.where(self.img[commands["magnitude"]].magnitude_spectrum==self.img[commands["magnitude"]].magnitude_spectrum.max())
+            max_point=(max_point[0][0],max_point[1][0])
+            if phase_mask[max_point[0],max_point[1]]==1:
+                percentage=0.4
+        except:
+            pass
         fft = np.fft.ifftshift(shifted_fft)
         img = np.fft.ifft2(fft)
         path=os.path.join(os.path.dirname(self.img[0].path),f"output{counter}.jpg")
-        if phase_mask[max_point[0],max_point[1]]==1:
-            percentage=0.12
-        else: percentage=0.7
-        if np.mean(phase_mask) > percentage:
+        if np.mean(phase_mask) > percentage and commands["magnitude"]!="empty" and commands["phase"]!="empty":
             image= self.scale(np.abs(img))
             cv.imwrite(path,image)
         else:

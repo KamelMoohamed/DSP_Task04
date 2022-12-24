@@ -12,12 +12,13 @@ let imagesContent = [
   },
 ];
 
-
 firstImg.addEventListener("change", (e) => {
-  bothBtns.style.display = "flex"
+  bothBtns.style.display = "flex";
   firstDisableBtn.classList.add("show-disable-btn");
   firstCanvas.classList.remove("disabled");
   firstDisableBtn.classList.remove("active");
+  document.querySelector(".uni1").classList.remove("uniform-show");
+
   sendImage(0);
   uploadFile("img1");
   setTimeout(makeGray.bind(null, "first-img-canvas"), 90);
@@ -29,10 +30,11 @@ firstImg.addEventListener("change", (e) => {
 });
 let secondImg = document.getElementById("img2");
 secondImg.addEventListener("change", (e) => {
-  bothBtns.style.display = "flex"
+  bothBtns.style.display = "flex";
   secondDisableBtn.classList.add("show-disable-btn");
   secondCanvas.classList.remove("disabled");
   secondDisableBtn.classList.remove("active");
+  document.querySelector(".uni2").classList.remove("uniform-show");
 
   sendImage(1);
   uploadFile("img2");
@@ -71,6 +73,7 @@ let firstDisableBtn = document.getElementById("first-disable");
 firstDisableBtn.addEventListener("click", () => {
   firstCanvas.classList.toggle("disabled");
   firstDisableBtn.classList.toggle("active");
+  document.querySelector(".uni1").classList.toggle("uniform-show");
 });
 
 let secondCanvas = document.getElementById("second-img-canvas");
@@ -79,6 +82,7 @@ let secondDisableBtn = document.getElementById("second-disable");
 secondDisableBtn.addEventListener("click", () => {
   secondCanvas.classList.toggle("disabled");
   secondDisableBtn.classList.toggle("active");
+  document.querySelector(".uni2").classList.toggle("uniform-show");
 });
 
 function toggle_images() {
@@ -110,7 +114,25 @@ var firstFtCanvas = document.getElementById("first-img-ft-canvas");
 var secondFtCanvas = document.getElementById("second-img-ft-canvas");
 let canvContainer = document.querySelector(".canv-cont");
 
+let first_img = false;
+let sec_img = false;
+
 function sendImage(pathParams) {
+  // if (first_img && sec_img) {
+  //   $.ajax({
+  //     type: "POST",
+  //     url: `/delete-image`,
+  //     contentType: false,
+  //     cache: false,
+  //     processData: false,
+  //     async: true,
+  //   });
+  // }
+  // if (pathParams == 0) {
+  //   first_img = !first_img;
+  // } else {
+  //   sec_img = !sec_img;
+  // }
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
 
   $.ajax({
@@ -230,6 +252,7 @@ function editImage(pathParams) {
 
 let bothBtns = document.getElementById("copy-img");
 bothBtns.addEventListener("click", () => {
+  console.log("$$$$$$$$$$$$$$");
   if (firstImg.value) {
     secondDisableBtn.classList.add("show-disable-btn");
     secondCanvas.classList.remove("disabled");
@@ -245,6 +268,17 @@ bothBtns.addEventListener("click", () => {
     console.log(imagesContent);
     toggle_images();
     editImage(0);
+    if (secondCanvas.width <= secondCanvas.height) {
+      secondFtCanvas.style.height = "100%";
+      secondFtCanvas.style.width = `${
+        secondCanvas.width * (canvContainer.clientHeight / secondCanvas.height)
+      }px`;
+    } else {
+      secondFtCanvas.style.width = "100%";
+      secondFtCanvas.style.height = `${
+        secondCanvas.height * (canvContainer.clientWidth / secondCanvas.width)
+      }px`;
+    }
   } else if (secondImg.value) {
     firstDisableBtn.classList.add("show-disable-btn");
     firstCanvas.classList.remove("disabled");
@@ -259,5 +293,16 @@ bothBtns.addEventListener("click", () => {
     imagesContent[0] = imagesContent[1];
     toggle_images();
     editImage(1);
+    if (firstCanvas.width <= firstCanvas.height) {
+      firstFtCanvas.style.height = "100%";
+      firstFtCanvas.style.width = `${
+        firstCanvas.width * (canvContainer.clientHeight / firstCanvas.height)
+      }px`;
+    } else {
+      firstFtCanvas.style.width = "100%";
+      firstFtCanvas.style.height = `${
+        firstCanvas.height * (canvContainer.clientWidth / firstCanvas.width)
+      }px`;
+    }
   }
 });
