@@ -63,12 +63,6 @@ img2Phase.addEventListener("click", () => {
   toggle_images();
 });
 
-// let img1Both = document.getElementById("img1-both");
-// img1Both.addEventListener("click", () => {
-//   bothType = true;
-//   toggle_images();
-// });
-
 let enable1 = document.getElementById("first-disable");
 enable1.addEventListener("click", () => {
   isImag1Enabled = !isImag1Enabled;
@@ -140,6 +134,25 @@ const drawEllipse = (shape) => {
   );
   context.fill();
 };
+function drawCircle(x, y, radius) {
+  context.fillStyle = "yellow";
+  context.beginPath();
+  context.arc(x, y, radius, 0, 2 * Math.PI);
+  context.fill();
+}
+function drawHandles(rect) {
+  if (rect.type == "rect") {
+    drawCircle(rect.x, rect.y, 2);
+    drawCircle(rect.x + rect.width, rect.y, 2);
+    drawCircle(rect.x + rect.width, rect.y + rect.height, 2);
+    drawCircle(rect.x, rect.height + rect.y, 2);
+  } else {
+    drawCircle(rect.x, rect.y + rect.radius2, 2);
+    drawCircle(rect.x, rect.y - rect.radius2, 2);
+    drawCircle(rect.x + rect.radius1, rect.y, 2);
+    drawCircle(rect.x - rect.radius1, rect.y, 2);
+  }
+}
 
 const draw_shapes = () => {
   context.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -197,27 +210,6 @@ const is_mouse_in_shape = (x, y, shape) => {
   }
 };
 
-function drawCircle(x, y, radius) {
-  context.fillStyle = "yellow";
-  context.beginPath();
-  context.arc(x, y, radius, 0, 2 * Math.PI);
-  context.fill();
-}
-function drawHandles(rect) {
-  // console.log(rect);
-  if (rect.type == "rect") {
-    drawCircle(rect.x, rect.y, 2);
-    drawCircle(rect.x + rect.width, rect.y, 2);
-    drawCircle(rect.x + rect.width, rect.y + rect.height, 2);
-    drawCircle(rect.x, rect.height + rect.y, 2);
-  } else {
-    drawCircle(rect.x, rect.y + rect.radius2, 2);
-    drawCircle(rect.x, rect.y - rect.radius2, 2);
-    drawCircle(rect.x + rect.radius1, rect.y, 2);
-    drawCircle(rect.x - rect.radius1, rect.y, 2);
-  }
-}
-
 // Mouse Clicks Handling
 const mouse_down = (event) => {
   mouseClick = true;
@@ -230,6 +222,7 @@ const mouse_down = (event) => {
   let index = 0;
   for (let shape of shapes) {
     if (shape.type == "rect") {
+      // Handelling rect dragging or resizing
       if (
         checkCloseEnough(startX, shape.x) &&
         checkCloseEnough(startY, shape.y)
@@ -264,10 +257,10 @@ const mouse_down = (event) => {
         currentShapeIndex = index;
         isSelected = true;
       }
-    } else {
-      // let distance = calculate_circle_distance(startX, startY, shape);
-      // if ((distance > 0.9 && distance < 1.1) || distance == Infinity) {
+    }
 
+    // Handelling ellipse dragging and resizing
+    else {
       if (
         checkCloseEnough(startX, shape.x) &&
         (checkCloseEnough(startY, shape.y + shape.radius2) ||
@@ -301,37 +294,28 @@ let mouse_up = (event) => {
   let mouseY = parseInt(event.clientY - offsetY) * scaleY;
 
   event.preventDefault();
+  // Drawing new shape if mouse pos doen't include shapes
+  let width = Math.max(startX, mouseX) - Math.min(startX, mouseX);
+  let height = Math.max(startY, mouseY) - Math.min(startY, mouseY);
   if (!isSelected && !dragBL && !dragBR && !dragTL && !dragTR && !circleMove) {
+    if (width == 0 || height == 0) return;
+    let shape = {
+      x: Math.min(startX, mouseX),
+      y: Math.min(startY, mouseY),
+    };
     if (!isCircleType) {
-      if (
-        Math.max(startX, mouseX) - Math.min(startX, mouseX) == 0 ||
-        Math.max(startY, mouseY) - Math.min(startY, mouseY) == 0
-      ) {
-        return;
-      }
-      let shape = {
-        x: Math.min(startX, mouseX),
-        y: Math.min(startY, mouseY),
-        width: Math.max(startX, mouseX) - Math.min(startX, mouseX),
-        height: Math.max(startY, mouseY) - Math.min(startY, mouseY),
-        type: "rect",
-      };
+      // Rect drawing
+      shape.width = width;
+      shape.height = height;
+      shape.type = "rect";
       drawRect(shape);
       shapes.push(shape);
-    } else {
-      if (
-        Math.max(startX, mouseX) - Math.min(startX, mouseX) == 0 ||
-        Math.max(startY, mouseY) - Math.min(startY, mouseY) == 0
-      ) {
-        return;
-      }
-      let shape = {
-        x: Math.min(startX, mouseX),
-        y: Math.min(startY, mouseY),
-        radius1: Math.max(startX, mouseX) - Math.min(startX, mouseX),
-        radius2: Math.max(startY, mouseY) - Math.min(startY, mouseY),
-        type: "ellipse",
-      };
+    }
+    // Ellipse drawing
+    else {
+      shape.radius1 = width;
+      shape.radius2 = height;
+      shape.type = "ellipse";
       drawEllipse(shape);
       shapes.push(shape);
     }
@@ -386,44 +370,35 @@ let mouse_move = (event) => {
     }
     draw_shapes();
   } else {
+    let width = Math.max(startX, mouseX) - Math.min(startX, mouseX);
+    let height = Math.max(startY, mouseY) - Math.min(startY, mouseY);
+    let shape = {
+      x: Math.min(startX, mouseX),
+      y: Math.min(startY, mouseY),
+    };
     if (!isSelected) {
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+      context.save();
+      context.beginPath();
       if (!isCircleType) {
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        context.save();
-        context.beginPath();
-
-        let shape = {
-          x: Math.min(startX, mouseX),
-          y: Math.min(startY, mouseY),
-          width: Math.max(startX, mouseX) - Math.min(startX, mouseX),
-          height: Math.max(startY, mouseY) - Math.min(startY, mouseY),
-          type: "rect",
-        };
+        shape.width = width;
+        shape.height = height;
+        shape.type = "rect";
         draw_shapes();
         drawRect(shape);
       } else {
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        context.save();
-        context.beginPath();
-
-        let shape = {
-          x: Math.min(startX, mouseX),
-          y: Math.min(startY, mouseY),
-          radius1: Math.max(startX, mouseX) - Math.min(startX, mouseX),
-          radius2: Math.max(startY, mouseY) - Math.min(startY, mouseY),
-          type: "ellipse",
-        };
+        shape.radius1 = width;
+        shape.radius2 = height;
+        shape.type = "ellipse";
         draw_shapes();
         drawEllipse(shape);
       }
     } else {
       let dx = mouseX - startX;
       let dy = mouseY - startY;
-
       let currentShape = shapes[currentShapeIndex];
       currentShape.x += dx;
       currentShape.y += dy;
-
       startX = mouseX;
       startY = mouseY;
       draw_shapes();
@@ -441,17 +416,13 @@ function change_canvas(className) {
   if (!mouseClick) {
     canvas = document.getElementById(`${className}-img-ft-canvas`);
     context = canvas.getContext("2d");
-
     dimensions = canvas.getBoundingClientRect();
     offsetX = dimensions.left;
     offsetY = dimensions.top;
-
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
-
     scaleX = canvas.width / dimensions.width;
     scaleY = canvas.height / dimensions.height;
-
     if (className == "first" && !isFirst) {
       secondShapes = shapes;
       shapes = firstShapes;
@@ -473,10 +444,8 @@ function change_canvas(className) {
 
 // Adding Delete Button
 const delete_shape = () => {
-  // if (currentShapeIndex != null) {
   shapes.splice(currentShapeIndex, 1);
   currentShapeIndex = null;
-  // }
   draw_shapes();
 };
 
@@ -484,7 +453,6 @@ const get_canvas_dimensions = () => {
   c = document.getElementById("first-img-ft-canvas");
   width = c.width;
   height = c.height;
-
   return [height, width];
 };
 

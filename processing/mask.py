@@ -33,7 +33,6 @@ def create_mask(Shape,data,canvas_dim,count):
                 init=np.logical_xor(init,mask)
         except:
             pass
-    cv.imwrite(f"output{count}.png",scale(init.astype(np.int8)))
 
     return init
 
@@ -43,8 +42,6 @@ def scale(image_array):
 
 
 def scales_calc(image_dim, canvas_dim):
-
     scaleY = image_dim[0]/ canvas_dim[0]
     scaleX = image_dim[1]/ canvas_dim[1]
-
     return[scaleX,scaleY,0,0]
