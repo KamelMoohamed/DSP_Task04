@@ -11,16 +11,11 @@ class ImageEditor:
     def upload_img(self:object,path:str,image_id:int,counter:int):
         dir_path = os.path.dirname(path)
         
-        self.img[image_id].path=path
-        self.img[image_id].img_data = cv.imread(path,cv.IMREAD_GRAYSCALE)
+        if(self.img[abs(image_id-1)].img_data.size==0):
+            self.shape= 0
+        self.img[image_id]=Image("init",path,self.shape)
         if(self.img[abs(image_id-1)].img_data.size==0):
             self.shape= self.img[image_id].img_data.shape
-        self.img[image_id].img_data=self.crop(self.img[image_id].img_data,self.shape)
-        cv.imwrite(path, self.img[image_id].img_data)
-        self.img[image_id].imgfft = np.fft.fft2(self.img[image_id].img_data)
-        self.img[image_id].fshift = np.fft.fftshift(self.img[image_id].imgfft)
-        self.img[image_id].magnitude_spectrum = np.abs(self.img[image_id].fshift)
-        self.img[image_id].phase_spectrum= np.angle(self.img[image_id].fshift)
         mag_path= f"mag{counter}.jpg"
         phase_path=f"phase{counter}.jpg"
 
@@ -29,21 +24,6 @@ class ImageEditor:
 
         return [mag_path, phase_path]
     
-
-    def crop(self,img_data,shape):
-        index=np.argmax(shape)
-        ratio= shape[index]/img_data.shape[index]
-        if ratio>1:
-            width = int(img_data.shape[1] * ratio)
-            height = int(img_data.shape[0] * ratio)
-            dim = (width, height)
-            print(dim)
-            img_data = cv.resize(img_data, dim, interpolation = cv.INTER_AREA)
-        
-        axis1= abs(shape[0]-img_data.shape[0])//2
-        axis2= abs(shape[1]-img_data.shape[1])//2
-        return img_data[axis1:axis1+shape[0],axis2:axis2+shape[1]]
-
     def scale(self,image_array):
         image=((image_array - image_array.min()) * (1/(image_array.max() - image_array.min()) * 255)).astype('uint8')
         return image
@@ -56,7 +36,6 @@ class ImageEditor:
             commands["magnitude"]="empty"
         if np.max(phase_mask)==0:
             commands["phase"]="empty"
-        print(commands)
 
         if commands["magnitude"]!="empty" and commands["phase"]!="empty":
             shifted_fft=mag_mask*self.img[commands["magnitude"]].magnitude_spectrum* np.exp(1j*phase_mask*self.img[commands["phase"]].phase_spectrum)
@@ -74,14 +53,14 @@ class ImageEditor:
                 percentage=0.4
         except:
             pass
-        fft = np.fft.ifftshift(shifted_fft)
-        img = np.fft.ifft2(fft)
         path=os.path.join(os.path.dirname(self.img[0].path),f"output{counter}.jpg")
+        mixed_img= Image("mix",shifted_fft,path)
+        
         if np.mean(phase_mask) > percentage and commands["magnitude"]!="empty" and commands["phase"]!="empty":
-            image= self.scale(np.abs(img))
+            image= self.scale(mixed_img.img_data)
             cv.imwrite(path,image)
         else:
-            image= self.scale(cv.equalizeHist(np.abs(img).astype(np.uint8)))
+            image= self.scale(cv.equalizeHist(mixed_img.img_data.astype(np.uint8)))
             cv.imwrite(path,image)
         return path
 
