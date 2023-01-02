@@ -4,11 +4,11 @@ from flask import Flask, render_template, request, jsonify, abort
 import numpy as np
 import copy
 
-from processing.Processing import ImageEditor
+from processing.editor import Editor
 
 app = Flask(__name__, template_folder="templates")
 
-editor= ImageEditor()
+editor= Editor()
 counter=0
 imgCounter=0
 
@@ -34,7 +34,7 @@ def upload(image_id):
         file_path = os.path.join(
             abspath, 'static', 'uploads', f"image{image_id}.{file_ext}")
         file.save(file_path)
-        paths=editor.upload_img(path=file_path,image_id=image_id,counter=imgCounter)
+        paths=editor.upload_image(path=file_path,image_id=image_id,counter=imgCounter)
         imgCounter+=1
         counter=0
         return jsonify({"path":[f"../static/uploads/image{image_id}.{file_ext}",*paths]}),201
@@ -56,7 +56,7 @@ def mix_image():
     global counter
     commands= request.json
     counter+=1
-    outputPath=editor.mix(counter,commands=commands)
+    outputPath=editor.mix_images(counter,commands=commands)
     outputPath=list(outputPath)
     outputPath[-5]=counter-1
     try:
