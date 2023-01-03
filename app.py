@@ -1,16 +1,16 @@
 import os
 import shutil
 from flask import Flask, render_template, request, jsonify, abort
-import numpy as np
 import copy
 
 from processing.editor import Editor
 
 app = Flask(__name__, template_folder="templates")
 
-editor= Editor()
-counter=0
-imgCounter=0
+editor = Editor()
+counter = 0
+imgCounter = 0
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -22,50 +22,56 @@ def upload(image_id):
     global editor
     global counter
     global imgCounter
-    if image_id>1:
-            abort(400,description="image_id must be equal 0 or 1 only")
+
+    # Wrong path parameter case
+    if image_id > 1:
+        abort(400, description="image_id must be equal 0 or 1 only")
+
     if request.files['img']:
-        if(not os.path.isdir(os.path.join("static","uploads"))):
-            os.makedirs(os.path.join("static","uploads"))
+        if (not os.path.isdir(os.path.join("static", "uploads"))):
+            os.makedirs(os.path.join("static", "uploads"))
+
         # Saving the uploaded file
         file = request.files['img']
-        file_ext= file.filename.split(".")[-1]  
+        file_ext = file.filename.split(".")[-1]
         abspath = os.path.dirname(__file__)
         file_path = os.path.join(
             abspath, 'static', 'uploads', f"image{image_id}.{file_ext}")
         file.save(file_path)
-        paths=editor.upload_image(path=file_path,image_id=image_id,counter=imgCounter)
-        imgCounter+=1
-        counter=0
-        return jsonify({"path":[f"../static/uploads/image{image_id}.{file_ext}",*paths]}),201
+        paths = editor.upload_image(
+            path=file_path, image_id=image_id, counter=imgCounter)
+        imgCounter += 1
+        counter = 0
+        return jsonify({"path": [f"../static/uploads/image{image_id}.{file_ext}", *paths]}), 201
+    return "", 400
 
-    return "",400
 
-@app.route("/edit-image/<int:image_id>", methods = ['POST'])
+@app.route("/edit-image/<int:image_id>", methods=['POST'])
 def edit_image(image_id):
     global editor
-    editor.img[abs(image_id-1)]=copy.copy(editor.img[image_id])
+    editor.img[abs(image_id-1)] = copy.copy(editor.img[image_id])
     print(editor.img)
-    return "",201
+    return "", 201
 
 
-
-@app.route("/mix-image",methods=["POST"])
+@app.route("/mix-image", methods=["POST"])
 def mix_image():
     global editor
     global counter
-    commands= request.json
-    counter+=1
-    outputPath=editor.mix_images(counter,commands=commands)
-    outputPath=list(outputPath)
-    outputPath[-5]=counter-1
+    commands = request.json
+    counter += 1
+    outputPath = editor.mix_images(counter, commands=commands)
+    outputPath = list(outputPath)
+    outputPath[-5] = counter-1
     try:
         os.remove("".join(map(str, outputPath)))
     except:
         pass
-    return jsonify({"path":f"../static/uploads/output{counter}.jpg"}),200
+    return jsonify({"path": f"../static/uploads/output{counter}.jpg"}), 200
+
 
 if __name__ == '__main__':
-    if(os.path.isdir(os.path.join("static","uploads"))):
-            shutil.rmtree(os.path.join(os.path.dirname(__file__),"static","uploads"))
-    app.run(debug=True) 
+    if (os.path.isdir(os.path.join("static", "uploads"))):
+        shutil.rmtree(os.path.join(
+            os.path.dirname(__file__), "static", "uploads"))
+    app.run(debug=True)
