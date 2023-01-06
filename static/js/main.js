@@ -118,21 +118,6 @@ let first_img = false;
 let sec_img = false;
 
 function sendImage(pathParams) {
-  // if (first_img && sec_img) {
-  //   $.ajax({
-  //     type: "POST",
-  //     url: `/delete-image`,
-  //     contentType: false,
-  //     cache: false,
-  //     processData: false,
-  //     async: true,
-  //   });
-  // }
-  // if (pathParams == 0) {
-  //   first_img = !first_img;
-  // } else {
-  //   sec_img = !sec_img;
-  // }
   var formData = new FormData($(`#upload-form${pathParams}`)[0]);
 
   $.ajax({
@@ -167,10 +152,6 @@ function sendImage(pathParams) {
           secondCanvas.height * (canvContainer.clientWidth / secondCanvas.width)
         }px`;
       }
-      // realCanvasHeight = firstFtCanvas.height;
-      // realCanvasWidth = firstFtCanvas.width;
-      // console.log(realCanvasHeight);
-      // console.log(realCanvasWidth);
 
       if (bothType) {
         imagesContent[0] = {
